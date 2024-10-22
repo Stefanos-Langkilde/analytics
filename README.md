@@ -10,4 +10,4 @@ Dependancies som bruges i dette projekt:
 
 -  NextJS
 -  shadcn/ui (npx shadcn@latest init -d)
--  Sass (npm install -g sass)
+-  Sass (npm install -g sass) (npm i sass)

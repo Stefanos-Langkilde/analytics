@@ -1,12 +1,45 @@
+import MyChart2 from "@/components/myChart2";
 import MyChart from "../components/myChart";
+import styles from "./mainPageStyle.module.scss";
+import MyChart3 from "@/components/myChart3";
 
 export default function Home() {
+   // add a new chart to the dashboard by adding a new object to the charts array
+   // the object should have an id, span, and type property
+   const charts = [
+      { id: 1, span: 12, type: "productPopularity" },
+      { id: 2, span: 6, type: "productSale" },
+      { id: 3, span: 6, type: "totalSales" },
+   ];
+
    return (
-      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-         <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-            <h1 className="text-4xl font-bold text-center sm:text-left">Welcome to your Analytics Dashboard</h1>
-            <MyChart />
-         </main>
-      </div>
+      <main className={styles.wrapper}>
+         <div className={styles.header}>
+            <h1>Welcome to your Analytics Dashboard</h1>
+            <p>Here you can see all the data you need to make informed decisions.</p>
+         </div>
+         <div className={styles.chartGrid}>
+            {charts.map(chart => (
+               <div key={chart.id} className={`${styles.chartGridItem} ${styles[`chartGridItem--span-${chart.span}`]}`}>
+                  {RenderChart(chart.type)}
+               </div>
+            ))}
+         </div>
+      </main>
    );
+}
+
+// This function will render the correct chart based on the type property of the chart object.
+//If you added a new chart type, you will need to add a new case to this function
+function RenderChart(chart: string) {
+   switch (chart) {
+      case "productPopularity":
+         return <MyChart />;
+      case "productSale":
+         return <MyChart2 />;
+      case "totalSales":
+         return <MyChart3 />;
+      default:
+         return null;
+   }
 }
