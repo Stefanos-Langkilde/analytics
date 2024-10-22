@@ -5,7 +5,7 @@ import MyChart3 from "@/components/myChart3";
 
 export default function Home() {
    // add a new chart to the dashboard by adding a new object to the charts array
-   // the object should have an id, span, and type property
+   // the object should have an id, how many columns it should span (max 12), and type property
    const charts = [
       { id: 1, span: 12, type: "productPopularity" },
       { id: 2, span: 6, type: "productSale" },

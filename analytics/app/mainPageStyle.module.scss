@@ -25,6 +25,10 @@
       grid-column: span 12;
    }
 
+   .chartGridItem--span-8 {
+      grid-column: span 8;
+   }
+
    .chartGridItem--span-6 {
       grid-column: span 6;
    }
@@ -33,7 +37,7 @@
       grid-column: span 4;
    }
 
-   .chartGridItem--span-3 {
-      grid-column: span 3;
+   .chartGridItem--span-2 {
+      grid-column: span 2;
    }
 }
