@@ -9,4 +9,4 @@ De data der bruges hentes fra en API fra Scan-Choco, og bearbejdes.
 Dependancies som bruges i dette projekt er:
 
 -  NextJS
--  Chart.js (npm install chart.js)
+-  shadcn/ui (npx shadcn@latest init -d)
