@@ -25,7 +25,7 @@ export default function MyChart() {
    } satisfies ChartConfig;
 
    return (
-      <>
+      <div className="bg-white rounded-lg m-1">
          <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
             <BarChart accessibilityLayer data={chartData}>
                <CartesianGrid vertical={false} />
@@ -36,6 +36,6 @@ export default function MyChart() {
                <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
             </BarChart>
          </ChartContainer>
-      </>
+      </div>
    );
 }
