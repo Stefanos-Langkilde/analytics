@@ -8,6 +8,9 @@ De data der bruges hentes fra en API fra Scan-Choco, og bearbejdes.
 
 Dependancies som bruges i dette projekt:
 
--  NextJS
--  shadcn/ui (npx shadcn@latest init -d)
--  Sass (npm install -g sass) (npm i sass)
+- NextJS
+- Sass (npm install -g sass) (npm i sass)
+- shadcn/ui (npx shadcn@latest init -d)
+- Chart component (npx shadcn@latest add chart)
+- Calendar component (npx shadcn@latest add calendar)
+- Popover component for calendar (npx shadcn@latest add popover)
