@@ -29,7 +29,7 @@ export default function Home() {
    );
 }
 
-// This function will render the correct chart based on the type property of the chart object.
+// This function will render the chart based on the type property of the chart object.
 //If you added a new chart type, you will need to add a new case to this function
 function RenderChart(chart: string) {
    switch (chart) {
