@@ -7,9 +7,9 @@ export default function Home() {
    // add a new chart to the dashboard by adding a new object to the charts array
    // the object should have an id, span, and type property
    const charts = [
-      { id: 1, span: 12, type: "bar" },
-      { id: 2, span: 6, type: "line" },
-      { id: 3, span: 6, type: "pie" },
+      { id: 1, span: 12, type: "productPopularity" },
+      { id: 2, span: 6, type: "productSale" },
+      { id: 3, span: 6, type: "totalSales" },
    ];
 
    return (
@@ -33,11 +33,11 @@ export default function Home() {
 //If you added a new chart type, you will need to add a new case to this function
 function RenderChart(chart: string) {
    switch (chart) {
-      case "bar":
+      case "productPopularity":
          return <MyChart />;
-      case "line":
+      case "productSale":
          return <MyChart2 />;
-      case "pie":
+      case "totalSales":
          return <MyChart3 />;
       default:
          return null;
