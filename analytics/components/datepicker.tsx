@@ -17,6 +17,8 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
       to: addDays(new Date(2024, 0, 20), 20),
    });
 
+   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+
    const router = useRouter();
 
    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -25,12 +27,15 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
          const formattedFrom = format(date.from, "yyyy-MM-dd");
          const formattedTo = format(date.to, "yyyy-MM-dd");
          router.push(`/?from=${formattedFrom}&to=${formattedTo}`);
+         setTimeout(() => {
+            setIsPopoverOpen(false); // Close the popover after a short delay
+         }, 100);
       }
    };
 
    return (
       <div className={cn("grid gap-2", className)}>
-         <Popover>
+         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
             <PopoverTrigger asChild>
                <Button
                   id="date"
@@ -53,7 +58,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
                <Calendar initialFocus mode="range" defaultMonth={date?.from} selected={date} onSelect={setDate} numberOfMonths={2} />
-               <Button onClick={handleSubmit} type="button">
+               <Button className="mb-2 ml-2" onClick={handleSubmit} type="button">
                   Submit
                </Button>
             </PopoverContent>
