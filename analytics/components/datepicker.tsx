@@ -9,38 +9,34 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivElement>) {
-   const [date, setDate] = React.useState<DateRange | undefined>({
-      from: new Date(2024, 0, 20),
-      to: addDays(new Date(2024, 0, 20), 20),
-   });
+   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
+
+   //useEffect set date from query params or today if not set
+   useEffect(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const from = urlParams.get("from");
+      const to = urlParams.get("to");
+      if (from && to) {
+         setDate({ from: new Date(from), to: new Date(to) });
+      } else {
+         setDate({ from: new Date(), to: addDays(new Date(), -7) });
+      }
+   }, []);
 
    const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
-   const router = useRouter();
-
-   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      if (date?.from && date?.to) {
-         const formattedFrom = format(date.from, "yyyy-MM-dd");
-         const formattedTo = format(date.to, "yyyy-MM-dd");
-         router.push(`/?from=${formattedFrom}&to=${formattedTo}`);
-         setTimeout(() => {
-            setIsPopoverOpen(false); // Close the popover after a short delay
-         }, 100);
-      }
-   };
-
    return (
       <div className={cn("grid gap-2", className)}>
-         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+         <Popover open={isPopoverOpen} onOpenChange={open => setIsPopoverOpen(open)}>
             <PopoverTrigger asChild>
                <Button
                   id="date"
                   variant={"outline"}
                   className={cn("w-[300px] justify-start text-left font-normal", !date && "text-muted-foreground")}
+                  onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                >
                   <CalendarIcon />
                   {date?.from ? (
@@ -56,11 +52,13 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                   )}
                </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
+            <PopoverContent className="w-auto p-0" align="start" onClick={e => e.stopPropagation()}>
                <Calendar initialFocus mode="range" defaultMonth={date?.from} selected={date} onSelect={setDate} numberOfMonths={2} />
-               <Button className="mb-2 ml-2" onClick={handleSubmit} type="button">
-                  Submit
-               </Button>
+               <form className="mb-2 ml-2">
+                  <input type="hidden" name="from" value={date?.from ? format(date.from, "yyyy-MM-dd") : ""} />
+                  <input type="hidden" name="to" value={date?.to ? format(date.to, "yyyy-MM-dd") : ""} />
+                  <Button type="submit">Submit</Button>
+               </form>
             </PopoverContent>
          </Popover>
       </div>
