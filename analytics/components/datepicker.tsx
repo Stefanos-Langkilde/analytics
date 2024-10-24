@@ -26,17 +26,14 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
       }
    }, []);
 
-   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-
    return (
       <div className={cn("grid gap-2", className)}>
-         <Popover open={isPopoverOpen} onOpenChange={open => setIsPopoverOpen(open)}>
+         <Popover>
             <PopoverTrigger asChild>
                <Button
                   id="date"
                   variant={"outline"}
                   className={cn("w-[300px] justify-start text-left font-normal", !date && "text-muted-foreground")}
-                  onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                >
                   <CalendarIcon />
                   {date?.from ? (
@@ -52,7 +49,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                   )}
                </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start" onClick={e => e.stopPropagation()}>
+            <PopoverContent className="w-auto p-0" align="start">
                <Calendar initialFocus mode="range" defaultMonth={date?.from} selected={date} onSelect={setDate} numberOfMonths={2} />
                <form className="mb-2 ml-2">
                   <input type="hidden" name="from" value={date?.from ? format(date.from, "yyyy-MM-dd") : ""} />
