@@ -4,14 +4,16 @@ import MyChart from "../components/myChart";
 import styles from "./mainPageStyle.module.scss";
 import MyChart3 from "@/components/myChart3";
 import Datepicker from "../components/datepicker";
+import LineChart from "@/components/lineChart";
 
 export default function Home() {
    // add a new chart to the dashboard by adding a new object to the charts array
    // the object should have an id, how many columns it should span (max 12), and type property
    const charts = [
-      { id: 1, span: 12, type: "productPopularity" },
-      { id: 2, span: 6, type: "productSale" },
-      { id: 3, span: 6, type: "totalSales" },
+      { id: 1, span: 12, type: "salesChart" },
+      { id: 2, span: 12, type: "productPopularity" },
+      { id: 3, span: 6, type: "productSale" },
+      { id: 4, span: 6, type: "totalSales" },
    ];
 
    return (
@@ -42,6 +44,8 @@ function RenderChart(chart: string) {
          return <MyChart2 />;
       case "totalSales":
          return <MyChart3 />;
+      case "salesChart":
+         return <LineChart />;
       default:
          return null;
    }
