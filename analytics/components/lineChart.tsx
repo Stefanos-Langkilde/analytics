@@ -40,7 +40,7 @@ const chartConfig = {
    },
 } satisfies ChartConfig;
 
-export default function Component() {
+export default function SalesLineChart() {
    return (
       <div className="bg-white rounded-lg m-1">
          <Card>
