@@ -2,45 +2,38 @@
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import getDateRangeFromParams from "@/utility/getDateRangeFromParams";
+import { format } from "date-fns";
 
-// Generate dates from October 1st to October 31st
-const generateDateOrders = () => {
+const generateDateOrders = (startDate: Date, endDate: Date) => {
    const orders: { [key: string]: number } = {};
-   const startDate = new Date(Date.UTC(2024, 9, 1)); // October 1st, 2024
-   const endDate = new Date(2024, 9, 31, 23, 59, 59); // October 31st, 2024
 
-   for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-      const formattedDate = date.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
+   for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+      const formattedDate = format(date, "yyyy-MM-dd"); // Format date as YYYY-MM-DD
       orders[formattedDate] = Math.floor(Math.random() * 100); // Random order count between 0 and 99
    }
 
    return orders;
 };
 
-// const chartData = [
-//    { month: "January", desktop: 186 },
-//    { month: "February", desktop: 305 },
-//    { month: "March", desktop: 237 },
-//    { month: "April", desktop: 73 },
-//    { month: "May", desktop: 209 },
-//    { month: "June", desktop: 214 },
-// ];
-
-const dateOrders = generateDateOrders();
-
-const chartData = Object.keys(dateOrders).map(date => ({
-   date,
-   Orders: dateOrders[date],
-}));
-
-const chartConfig = {
-   desktop: {
-      label: "Orders",
-      color: "hsl(var(--chart-2))",
-   },
-} satisfies ChartConfig;
-
 export default function SalesLineChart() {
+   // Get the date range from URL parameters
+   const { fromDate, toDate } = getDateRangeFromParams();
+
+   // Generate the orders for the specified date range
+   const dateOrders = generateDateOrders(fromDate, toDate);
+   const chartData = Object.keys(dateOrders).map(date => ({
+      date,
+      Orders: dateOrders[date],
+   }));
+
+   const chartConfig = {
+      desktop: {
+         label: "Orders",
+         color: "hsl(var(--chart-2))",
+      },
+   } satisfies ChartConfig;
+
    return (
       <div className="bg-white rounded-lg m-1">
          <Card>
