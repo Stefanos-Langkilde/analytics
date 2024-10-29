@@ -3,8 +3,9 @@ import MyChart2 from "@/components/myChart2";
 import MyChart from "../components/myChart";
 import styles from "./mainPageStyle.module.scss";
 import MyChart3 from "@/components/myChart3";
-import Datepicker from "../components/datepicker";
 import LineChart from "@/components/lineChart";
+import Datepicker from "../components/datepicker";
+import RadioDropdown from "../components/radioDropdown";
 
 export default function Home() {
    // add a new chart to the dashboard by adding a new object to the charts array
@@ -21,7 +22,10 @@ export default function Home() {
          <div className={styles.header}>
             <h1>Welcome to your Analytics Dashboard</h1>
             <p>Here you can see all the data you need to make informed decisions.</p>
-            <Datepicker />
+            <div className={styles.headerButtons}>
+               <Datepicker />
+               <RadioDropdown />
+            </div>
          </div>
          <div className={styles.chartGrid}>
             {charts.map(chart => (
