@@ -9,7 +9,7 @@ const generateDateOrders = (startDate: Date, endDate: Date) => {
    const orders: { [key: string]: number } = {};
 
    for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
-      const formattedDate = format(date, "yyyy-MM-dd"); // Format date as YYYY-MM-DD
+      const formattedDate = format(date, "yyyy-MM-dd");
       orders[formattedDate] = Math.floor(Math.random() * 100); // Random order count between 0 and 99
    }
 
