@@ -14,3 +14,4 @@ Dependancies som bruges i dette projekt:
 - Chart component (npx shadcn@latest add chart)
 - Calendar component (npx shadcn@latest add calendar)
 - Popover component for calendar (npx shadcn@latest add popover)
+- Dropdown menu (npx shadcn@latest add dropdown-menu)
