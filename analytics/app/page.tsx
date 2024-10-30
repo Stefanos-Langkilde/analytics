@@ -6,6 +6,7 @@ import MyChart3 from "@/components/myChart3";
 import LineChart from "@/components/lineChart";
 import Datepicker from "../components/datepicker";
 import RadioDropdown from "../components/radioDropdown";
+import { useState } from "react";
 
 export default function Home() {
    // add a new chart to the dashboard by adding a new object to the charts array
@@ -17,6 +18,11 @@ export default function Home() {
       { id: 4, span: 6, type: "totalSales" },
    ];
 
+   const [dropdownValue, setDropdownValue] = useState("");
+   const handleDropdownChange = (value: string) => {
+      setDropdownValue(value);
+   };
+
    return (
       <main className={styles.wrapper}>
          <div className={styles.header}>
@@ -24,13 +30,14 @@ export default function Home() {
             <p>Here you can see all the data you need to make informed decisions.</p>
             <div className={styles.headerButtons}>
                <Datepicker />
-               <RadioDropdown />
+               <RadioDropdown onChange={handleDropdownChange} />
+               <p>Selected Dropdown Value: {dropdownValue}</p>
             </div>
          </div>
          <div className={styles.chartGrid}>
             {charts.map(chart => (
                <div key={chart.id} className={`${styles.chartGridItem} ${styles[`chartGridItem--span-${chart.span}`]}`}>
-                  {RenderChart(chart.type)}
+                  {RenderChart(chart.type, dropdownValue)}
                </div>
             ))}
          </div>
@@ -40,7 +47,7 @@ export default function Home() {
 
 // This function will render the chart based on the type property of the chart object.
 //If you added a new chart type, you will need to add a new case to this function
-function RenderChart(chart: string) {
+function RenderChart(chart: string, dropdownValue: string) {
    switch (chart) {
       case "productPopularity":
          return <MyChart />;
@@ -49,7 +56,7 @@ function RenderChart(chart: string) {
       case "totalSales":
          return <MyChart3 />;
       case "salesChart":
-         return <LineChart />;
+         return <LineChart passedDropdownValue={dropdownValue} />;
       default:
          return null;
    }
