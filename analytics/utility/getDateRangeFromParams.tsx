@@ -9,7 +9,7 @@ export default function GetDateRangeFromParams() {
    const toParam = searchParams.get("to");
 
    // Parse the dates or use default values
-   const fromDate = fromParam ? parseISO(fromParam) : new Date(new Date().setDate(new Date().getDate() - 30));
+   const fromDate = fromParam ? parseISO(fromParam) : new Date(new Date().setDate(new Date().getDate() - 7));
    const toDate = toParam ? parseISO(toParam) : new Date();
 
    // If dates are invalid, fall back to a safe range

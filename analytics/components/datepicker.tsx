@@ -22,7 +22,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
       if (from && to) {
          setDate({ from: new Date(from), to: new Date(to) });
       } else {
-         setDate({ from: new Date(), to: addDays(new Date(), -30) });
+         setDate({ from: new Date(), to: addDays(new Date(), -7) });
       }
    }, []);
 
