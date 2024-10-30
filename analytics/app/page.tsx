@@ -31,7 +31,6 @@ export default function Home() {
             <div className={styles.headerButtons}>
                <Datepicker />
                <RadioDropdown onChange={handleDropdownChange} />
-               <p>Selected Dropdown Value: {dropdownValue}</p>
             </div>
          </div>
          <div className={styles.chartGrid}>
