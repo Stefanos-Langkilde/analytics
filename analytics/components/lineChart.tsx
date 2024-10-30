@@ -5,32 +5,60 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "
 import getDateRangeFromParams from "@/utility/getDateRangeFromParams";
 import { format } from "date-fns";
 
-const generateDateOrders = (startDate: Date, endDate: Date) => {
-   const orders: { [key: string]: number } = {};
+const generateDateOrders = (from: Date, to: Date) => {
+   const orders: { [key: string]: { orders: number; revenue: number; sales: number } } = {};
+   const startDate = new Date(from);
+   const endDate = new Date(to);
 
    for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
       const formattedDate = format(date, "yyyy-MM-dd");
-      orders[formattedDate] = Math.floor(Math.random() * 100); // Random order count between 0 and 99
+      orders[formattedDate] = {
+         orders: Math.floor(Math.random() * 100), // Random order count between 0 and 99
+         revenue: Math.floor(Math.random() * 1000), // Random revenue between 0 and 999
+         sales: Math.floor(Math.random() * 50), // Random sales between 0 and 99
+      };
    }
 
    return orders;
 };
 
-export default function SalesLineChart() {
+const valueToDanishText: { [key: string]: string } = {
+   revenue: "Omsætning",
+   sales: "Salg",
+   orders: "Ordrer",
+};
+
+interface DropdownValue {
+   passedDropdownValue: string;
+}
+
+export default function SalesLineChart({ passedDropdownValue }: DropdownValue) {
    // Get the date range from URL parameters
    const { fromDate, toDate } = getDateRangeFromParams();
+
+   const dropdownValue = passedDropdownValue;
 
    // Generate the orders for the specified date range
    const dateOrders = generateDateOrders(fromDate, toDate);
    const chartData = Object.keys(dateOrders).map(date => ({
       date,
-      Orders: dateOrders[date],
+      orders: dateOrders[date].orders,
+      revenue: dateOrders[date].revenue,
+      sales: dateOrders[date].sales,
    }));
 
    const chartConfig = {
-      desktop: {
-         label: "Orders",
+      orders: {
+         label: "Ordrer",
          color: "hsl(var(--chart-2))",
+      },
+      revenue: {
+         label: "Omsætning",
+         color: "hsl(var(--chart-1))",
+      },
+      sales: {
+         label: "Salg",
+         color: "hsl(var(--chart-4))",
       },
    } satisfies ChartConfig;
 
@@ -66,14 +94,14 @@ export default function SalesLineChart() {
                         axisLine={false}
                         tickLine={false}
                         label={{
-                           value: "Salg",
-                           angle: -45,
+                           value: valueToDanishText[dropdownValue],
+                           angle: -90,
                            position: "insideLeft",
                            style: { textAnchor: "middle" },
                         }}
                      />
                      <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                     <Line dataKey="Orders" type="monotone" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
+                     <Line dataKey={dropdownValue} type="monotone" stroke={`var(--color-${dropdownValue})`} strokeWidth={2} dot={false} />
                   </LineChart>
                </ChartContainer>
             </CardContent>
