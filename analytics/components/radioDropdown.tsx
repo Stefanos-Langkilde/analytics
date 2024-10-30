@@ -12,22 +12,33 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useEffect, useState } from "react";
 
-export default function RadioDropdown() {
-   const [position, setPosition] = React.useState("bottom");
+const valueToDanishText = {
+   revenue: "Omsætning",
+   sales: "Salg",
+   orders: "Ordre",
+};
+
+export default function RadioDropdown({ onChange }: { onChange: (value: string) => void }) {
+   const [position, setPosition] = useState<keyof typeof valueToDanishText>("revenue");
+
+   useEffect(() => {
+      onChange(position);
+   }, [position, onChange]);
 
    return (
       <DropdownMenu>
          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Open</Button>
+            <Button variant="outline">{valueToDanishText[position]}</Button>
          </DropdownMenuTrigger>
          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
+            <DropdownMenuLabel>Vælg data</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-               <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-               <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
-               <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+            <DropdownMenuRadioGroup value={position} onValueChange={value => setPosition(value as keyof typeof valueToDanishText)}>
+               <DropdownMenuRadioItem value="revenue">Omsætning</DropdownMenuRadioItem>
+               <DropdownMenuRadioItem value="sales">Salg</DropdownMenuRadioItem>
+               <DropdownMenuRadioItem value="orders">Ordre</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
          </DropdownMenuContent>
       </DropdownMenu>
