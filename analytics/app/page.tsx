@@ -1,17 +1,21 @@
 "use client";
+import styles from "./mainPageStyle.module.scss";
+import Datepicker from "../components/datepicker";
 import MyChart2 from "@/components/myChart2";
 import MyChart from "../components/myChart";
-import styles from "./mainPageStyle.module.scss";
 import MyChart3 from "@/components/myChart3";
 import LineChart from "@/components/lineChart";
-import Datepicker from "../components/datepicker";
+import BarChart from "@/components/barChart";
+import PieChart from "@/components/pieChart";
 
 export default function Home() {
    // add a new chart to the dashboard by adding a new object to the charts array
    // the object should have an id, how many columns it should span (max 12), and type property.
-   // position the chart by changing the order of the objects in the array, first item will be top
+   // position the chart by changing the order of the objects in the array, first item will be on top
    const charts = [
       { id: 1, span: 12, type: "salesChart" },
+      { id: 5, span: 8, type: "ordersMade" },
+      { id: 6, span: 4, type: "firstVersusRebuyers" },
       { id: 2, span: 12, type: "productPopularity" },
       { id: 3, span: 6, type: "productSale" },
       { id: 4, span: 6, type: "totalSales" },
@@ -49,6 +53,10 @@ function RenderChart(chart: string) {
          return <MyChart3 />;
       case "salesChart":
          return <LineChart />;
+      case "ordersMade":
+         return <BarChart />;
+      case "firstVersusRebuyers":
+         return <PieChart />;
       default:
          return null;
    }
