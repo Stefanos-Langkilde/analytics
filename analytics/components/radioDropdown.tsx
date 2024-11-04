@@ -30,7 +30,9 @@ export default function RadioDropdown({ onChange }: { onChange: (value: string) 
    return (
       <DropdownMenu>
          <DropdownMenuTrigger asChild>
-            <Button variant="outline">{valueToDanishText[position]}</Button>
+            <Button className="w-44 mt-0 md:w-56" variant="outline">
+               {valueToDanishText[position]}
+            </Button>
          </DropdownMenuTrigger>
          <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Vælg data</DropdownMenuLabel>
