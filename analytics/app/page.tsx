@@ -5,23 +5,17 @@ import styles from "./mainPageStyle.module.scss";
 import MyChart3 from "@/components/myChart3";
 import LineChart from "@/components/lineChart";
 import Datepicker from "../components/datepicker";
-import RadioDropdown from "../components/radioDropdown";
-import { useState } from "react";
 
 export default function Home() {
    // add a new chart to the dashboard by adding a new object to the charts array
-   // the object should have an id, how many columns it should span (max 12), and type property
+   // the object should have an id, how many columns it should span (max 12), and type property.
+   // position the chart by changing the order of the objects in the array, first item will be top
    const charts = [
       { id: 1, span: 12, type: "salesChart" },
       { id: 2, span: 12, type: "productPopularity" },
       { id: 3, span: 6, type: "productSale" },
       { id: 4, span: 6, type: "totalSales" },
    ];
-
-   const [dropdownValue, setDropdownValue] = useState("");
-   const handleDropdownChange = (value: string) => {
-      setDropdownValue(value);
-   };
 
    return (
       <main className={styles.wrapper}>
@@ -30,13 +24,12 @@ export default function Home() {
             <p>Here you can see all the data you need to make informed decisions.</p>
             <div className={styles.headerButtons}>
                <Datepicker />
-               <RadioDropdown onChange={handleDropdownChange} />
             </div>
          </div>
          <div className={styles.chartGrid}>
             {charts.map(chart => (
                <div key={chart.id} className={`${styles.chartGridItem} ${styles[`chartGridItem--span-${chart.span}`]}`}>
-                  {RenderChart(chart.type, dropdownValue)}
+                  {RenderChart(chart.type)}
                </div>
             ))}
          </div>
@@ -46,7 +39,7 @@ export default function Home() {
 
 // This function will render the chart based on the type property of the chart object.
 //If you added a new chart type, you will need to add a new case to this function
-function RenderChart(chart: string, dropdownValue: string) {
+function RenderChart(chart: string) {
    switch (chart) {
       case "productPopularity":
          return <MyChart />;
@@ -55,7 +48,7 @@ function RenderChart(chart: string, dropdownValue: string) {
       case "totalSales":
          return <MyChart3 />;
       case "salesChart":
-         return <LineChart passedDropdownValue={dropdownValue} />;
+         return <LineChart />;
       default:
          return null;
    }
