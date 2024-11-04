@@ -1,9 +1,11 @@
 "use client";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import getDateRangeFromParams from "@/utility/getDateRangeFromParams";
 import { format } from "date-fns";
+import RadioDropDown from "@/components/radioDropdown";
+import { useState } from "react";
 
 const generateDateOrders = (from: Date, to: Date) => {
    const orders: { [key: string]: { orders: number; revenue: number; sales: number } } = {};
@@ -28,15 +30,20 @@ const valueToDanishText: { [key: string]: string } = {
    orders: "Ordrer",
 };
 
-interface DropdownValue {
-   passedDropdownValue: string;
-}
+// interface DropdownValue {
+//    passedDropdownValue: string;
+// }
 
-export default function SalesLineChart({ passedDropdownValue }: DropdownValue) {
+export default function SalesLineChart() {
    // Get the date range from URL parameters
    const { fromDate, toDate } = getDateRangeFromParams();
 
-   const dropdownValue = passedDropdownValue;
+   // const dropdownValue = passedDropdownValue;
+
+   const [dropdownValue, setDropdownValue] = useState("");
+   const handleDropdownChange = (value: string) => {
+      setDropdownValue(value);
+   };
 
    // Generate the orders for the specified date range
    const dateOrders = generateDateOrders(fromDate, toDate);
@@ -62,9 +69,19 @@ export default function SalesLineChart({ passedDropdownValue }: DropdownValue) {
       },
    } satisfies ChartConfig;
 
+   //calculate total amount for the selected value and date range
+   const totalAmount = chartData.reduce((acc, curr) => {
+      const value = curr[dropdownValue as keyof typeof curr];
+      return acc + (typeof value === "number" ? value : 0);
+   }, 0);
+
    return (
       <div className="bg-white rounded-lg m-1">
          <Card>
+            <CardHeader className="flex flex-row justify-between items-center" title="Dataset">
+               <CardTitle>{totalAmount}</CardTitle>
+               <RadioDropDown onChange={handleDropdownChange} />
+            </CardHeader>
             <CardContent>
                <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
                   <LineChart
