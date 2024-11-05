@@ -2,37 +2,10 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import getDateRangeFromParams from "@/utility/getDateRangeFromParams";
-import { format } from "date-fns";
+import getDateRangeFromParams from "@/utils/getDateRangeFromParams";
 import RadioDropDown from "@/components/radioDropdown";
 import { useState } from "react";
-
-const generateDateOrders = (from: Date, to: Date) => {
-   const orders: { [key: string]: { orders: number; revenue: number; sales: number } } = {};
-   const startDate = new Date(from);
-   const endDate = new Date(to);
-
-   for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
-      const formattedDate = format(date, "yyyy-MM-dd");
-      orders[formattedDate] = {
-         orders: Math.floor(Math.random() * 100), // Random order count between 0 and 99
-         revenue: Math.floor(Math.random() * 1000), // Random revenue between 0 and 999
-         sales: Math.floor(Math.random() * 50), // Random sales between 0 and 99
-      };
-   }
-
-   return orders;
-};
-
-const valueToDanishText: { [key: string]: string } = {
-   revenue: "Omsætning",
-   sales: "Salg",
-   orders: "Ordrer",
-};
-
-// interface DropdownValue {
-//    passedDropdownValue: string;
-// }
+import { generateDateOrders, valueToDanishText } from "@/utils/chartUtils";
 
 export default function SalesLineChart() {
    // Get the date range from URL parameters
