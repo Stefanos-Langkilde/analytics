@@ -76,53 +76,51 @@ export default function SalesLineChart() {
    }, 0);
 
    return (
-      <div className="bg-white rounded-lg m-1">
-         <Card>
-            <CardHeader className="flex flex-row justify-between items-center" title="Dataset">
-               <CardTitle>{totalAmount}</CardTitle>
-               <RadioDropDown onChange={handleDropdownChange} />
-            </CardHeader>
-            <CardContent>
-               <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
-                  <LineChart
-                     accessibilityLayer
-                     data={chartData}
-                     margin={{
-                        left: 12,
-                        right: 12,
+      <Card className="bg-white rounded-lg h-[100%]">
+         <CardHeader className="flex flex-row justify-between items-center" title="Dataset">
+            <CardTitle>{totalAmount}</CardTitle>
+            <RadioDropDown onChange={handleDropdownChange} />
+         </CardHeader>
+         <CardContent>
+            <ChartContainer config={chartConfig} className="h-[200px] w-full">
+               <LineChart
+                  accessibilityLayer
+                  data={chartData}
+                  margin={{
+                     left: 12,
+                     right: 12,
+                  }}
+               >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                     dataKey="date"
+                     tickLine={false}
+                     axisLine={false}
+                     tickMargin={2}
+                     minTickGap={100}
+                     tickFormatter={value => {
+                        const date = new Date(value);
+                        return date.toLocaleDateString("da-DK", {
+                           month: "short",
+                           day: "numeric",
+                        });
                      }}
-                  >
-                     <CartesianGrid vertical={false} />
-                     <XAxis
-                        dataKey="date"
-                        tickLine={false}
-                        axisLine={false}
-                        tickMargin={2}
-                        minTickGap={100}
-                        tickFormatter={value => {
-                           const date = new Date(value);
-                           return date.toLocaleDateString("da-DK", {
-                              month: "short",
-                              day: "numeric",
-                           });
-                        }}
-                     />
-                     <YAxis
-                        axisLine={false}
-                        tickLine={false}
-                        label={{
-                           value: valueToDanishText[dropdownValue],
-                           angle: -90,
-                           position: "insideLeft",
-                           style: { textAnchor: "middle" },
-                        }}
-                     />
-                     <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                     <Line dataKey={dropdownValue} type="monotone" stroke={`var(--color-${dropdownValue})`} strokeWidth={2} dot={false} />
-                  </LineChart>
-               </ChartContainer>
-            </CardContent>
-         </Card>
-      </div>
+                  />
+                  <YAxis
+                     axisLine={false}
+                     tickLine={false}
+                     label={{
+                        value: valueToDanishText[dropdownValue],
+                        angle: -90,
+                        position: "insideLeft",
+                        style: { textAnchor: "middle" },
+                     }}
+                  />
+                  <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                  <Line dataKey={dropdownValue} type="monotone" stroke={`var(--color-${dropdownValue})`} strokeWidth={2} dot={false} />
+               </LineChart>
+            </ChartContainer>
+         </CardContent>
+      </Card>
    );
 }
