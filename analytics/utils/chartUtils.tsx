@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { format } from "date-fns";
 
+/// This function generates random orders for each day in the specified date range
 export const generateDateOrders = (from: Date, to: Date) => {
    const orders: { [key: string]: { orders: number; revenue: number; sales: number } } = {};
    const startDate = new Date(from);
@@ -17,8 +19,31 @@ export const generateDateOrders = (from: Date, to: Date) => {
    return orders;
 };
 
+/// This function converts the value to a Danish text
 export const valueToDanishText: { [key: string]: string } = {
    revenue: "Omsætning",
    sales: "Salg",
    orders: "Ordrer",
+};
+
+/// This function aggregates the data by summing up the count for each buyerType
+export function summarizeBuyerTypeData(data: { buyerType: string; count: number; fill: string }[]) {
+   return data.reduce((acc: { buyerType: string; count: number; fill: string }[], curr) => {
+      const existing = acc.find(item => item.buyerType === curr.buyerType);
+      if (existing) {
+         existing.count += curr.count;
+      } else {
+         acc.push({ ...curr });
+      }
+      return acc;
+   }, []);
+}
+
+/// This hook manages the dropdown value state
+export const useDropdownValue = () => {
+   const [dropdownValue, setDropdownValue] = useState("");
+   const handleDropdownChange = (value: string) => {
+      setDropdownValue(value);
+   };
+   return { dropdownValue, handleDropdownChange };
 };

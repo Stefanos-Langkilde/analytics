@@ -4,22 +4,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import getDateRangeFromParams from "@/utils/getDateRangeFromParams";
 import RadioDropDown from "@/components/radioDropdown";
-import { useState } from "react";
+import { useDropdownValue } from "@/utils/chartUtils";
 import { generateDateOrders, valueToDanishText } from "@/utils/chartUtils";
 
 export default function SalesLineChart() {
    // Get the date range from URL parameters
    const { fromDate, toDate } = getDateRangeFromParams();
 
-   // const dropdownValue = passedDropdownValue;
-
-   const [dropdownValue, setDropdownValue] = useState("");
-   const handleDropdownChange = (value: string) => {
-      setDropdownValue(value);
-   };
+   // Get the dropdown value and handle change function from
+   const { dropdownValue, handleDropdownChange } = useDropdownValue();
 
    // Generate the orders for the specified date range
    const dateOrders = generateDateOrders(fromDate, toDate);
+
    const chartData = Object.keys(dateOrders).map(date => ({
       date,
       orders: dateOrders[date].orders,

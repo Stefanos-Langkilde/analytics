@@ -2,6 +2,7 @@
 import { Pie, PieChart } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { summarizeBuyerTypeData } from "@/utils/chartUtils";
 
 export const description = "A pie chart visiting buyers";
 
@@ -13,15 +14,7 @@ const chartData = [
    { buyerType: "firstTime", count: 90, fill: "var(--color-firstTime)" },
 ];
 
-const aggregatedData = chartData.reduce((acc: { buyerType: string; count: number; fill: string }[], curr) => {
-   const existing = acc.find(item => item.buyerType === curr.buyerType);
-   if (existing) {
-      existing.count += curr.count;
-   } else {
-      acc.push({ ...curr });
-   }
-   return acc;
-}, []);
+const aggregatedData = summarizeBuyerTypeData(chartData);
 
 const chartConfig = {
    visitors: {
