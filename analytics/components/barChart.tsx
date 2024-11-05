@@ -1,5 +1,5 @@
 "use client";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import getDateRangeFromParams from "@/utility/getDateRangeFromParams";
@@ -82,8 +82,8 @@ export default function SalesLineChart() {
             <RadioDropDown onChange={handleDropdownChange} />
          </CardHeader>
          <CardContent>
-            <ChartContainer config={chartConfig} className="h-[200px] w-full">
-               <LineChart
+            <ChartContainer config={chartConfig} className="max-h-[200px]  w-full">
+               <BarChart
                   accessibilityLayer
                   data={chartData}
                   margin={{
@@ -117,8 +117,8 @@ export default function SalesLineChart() {
                      }}
                   />
                   <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                  <Line dataKey={dropdownValue} type="monotone" stroke={`var(--color-${dropdownValue})`} strokeWidth={2} dot={false} />
-               </LineChart>
+                  <Bar dataKey={dropdownValue} fill={`var(--color-${dropdownValue})`} radius={8} />
+               </BarChart>
             </ChartContainer>
          </CardContent>
       </Card>
