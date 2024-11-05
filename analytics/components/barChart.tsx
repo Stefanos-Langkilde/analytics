@@ -1,5 +1,5 @@
 "use client";
-import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import getDateRangeFromParams from "@/utility/getDateRangeFromParams";
@@ -76,53 +76,51 @@ export default function SalesLineChart() {
    }, 0);
 
    return (
-      <div className="bg-white rounded-lg m-1 h-[300px]">
-         <Card>
-            <CardHeader className="flex flex-row justify-between items-center" title="Dataset">
-               <CardTitle>{totalAmount}</CardTitle>
-               <RadioDropDown onChange={handleDropdownChange} />
-            </CardHeader>
-            <CardContent>
-               <ChartContainer config={chartConfig} className="h-[250px] w-full">
-                  <BarChart
-                     accessibilityLayer
-                     data={chartData}
-                     margin={{
-                        left: 12,
-                        right: 12,
+      <Card className="bg-white rounded-lg h-[100%]">
+         <CardHeader className="flex flex-row justify-between items-center" title="Dataset">
+            <CardTitle>{totalAmount}</CardTitle>
+            <RadioDropDown onChange={handleDropdownChange} />
+         </CardHeader>
+         <CardContent>
+            <ChartContainer config={chartConfig} className="max-h-[200px]  w-full">
+               <BarChart
+                  accessibilityLayer
+                  data={chartData}
+                  margin={{
+                     left: 12,
+                     right: 12,
+                  }}
+               >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                     dataKey="date"
+                     tickLine={false}
+                     axisLine={false}
+                     tickMargin={2}
+                     minTickGap={100}
+                     tickFormatter={value => {
+                        const date = new Date(value);
+                        return date.toLocaleDateString("da-DK", {
+                           month: "short",
+                           day: "numeric",
+                        });
                      }}
-                  >
-                     <CartesianGrid vertical={false} />
-                     <XAxis
-                        dataKey="date"
-                        tickLine={false}
-                        axisLine={false}
-                        tickMargin={2}
-                        minTickGap={100}
-                        tickFormatter={value => {
-                           const date = new Date(value);
-                           return date.toLocaleDateString("da-DK", {
-                              month: "short",
-                              day: "numeric",
-                           });
-                        }}
-                     />
-                     <YAxis
-                        axisLine={false}
-                        tickLine={false}
-                        label={{
-                           value: valueToDanishText[dropdownValue],
-                           angle: -90,
-                           position: "insideLeft",
-                           style: { textAnchor: "middle" },
-                        }}
-                     />
-                     <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                     <Bar dataKey={dropdownValue} fill={`var(--color-${dropdownValue})`} radius={8} />
-                  </BarChart>
-               </ChartContainer>
-            </CardContent>
-         </Card>
-      </div>
+                  />
+                  <YAxis
+                     axisLine={false}
+                     tickLine={false}
+                     label={{
+                        value: valueToDanishText[dropdownValue],
+                        angle: -90,
+                        position: "insideLeft",
+                        style: { textAnchor: "middle" },
+                     }}
+                  />
+                  <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                  <Bar dataKey={dropdownValue} fill={`var(--color-${dropdownValue})`} radius={8} />
+               </BarChart>
+            </ChartContainer>
+         </CardContent>
+      </Card>
    );
 }
