@@ -22,7 +22,6 @@ export const generateDateOrders = (from: Date, to: Date) => {
 /// This function converts the value to a Danish text
 export const valueToDanishText: { [key: string]: string } = {
    revenue: "Omsætning",
-   sales: "Salg",
    orders: "Ordrer",
 };
 

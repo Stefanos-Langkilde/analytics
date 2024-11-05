@@ -33,10 +33,6 @@ export default function SalesLineChart() {
          label: "Omsætning",
          color: "hsl(var(--chart-1))",
       },
-      sales: {
-         label: "Salg",
-         color: "hsl(var(--chart-4))",
-      },
    } satisfies ChartConfig;
 
    //calculate total amount for the selected value and date range
