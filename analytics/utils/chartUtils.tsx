@@ -38,6 +38,19 @@ export function summarizeBuyerTypeData(data: { buyerType: string; count: number;
    }, []);
 }
 
+/// This function calculates the total amount for the selected value and date range
+interface ChartData {
+   [key: string]: number;
+}
+
+export const calculateTotalAmount = (chartData: ChartData[], dropdownValue: string) => {
+   return chartData.reduce((acc, curr) => {
+      const value = curr[dropdownValue as keyof typeof curr];
+      return acc + (typeof value === "number" ? value : 0);
+   }, 0);
+};
+///----------------------------------------------
+
 /// This hook manages the dropdown value state
 export const useDropdownValue = () => {
    const [dropdownValue, setDropdownValue] = useState("");
