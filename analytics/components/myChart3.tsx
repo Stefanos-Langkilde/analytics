@@ -2,6 +2,7 @@
 import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
+import { Card } from "./ui/card";
 
 export default function MyChart() {
    const chartData = [
@@ -25,8 +26,8 @@ export default function MyChart() {
    } satisfies ChartConfig;
 
    return (
-      <div className="bg-white rounded-lg m-1">
-         <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
+      <Card className="bg-white rounded-lg h-[100%]">
+         <ChartContainer config={chartConfig} className="h-[250px] w-full">
             <BarChart accessibilityLayer data={chartData}>
                <CartesianGrid vertical={false} />
                <ChartTooltip content={<ChartTooltipContent />} />
@@ -36,6 +37,6 @@ export default function MyChart() {
                <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
             </BarChart>
          </ChartContainer>
-      </div>
+      </Card>
    );
 }
