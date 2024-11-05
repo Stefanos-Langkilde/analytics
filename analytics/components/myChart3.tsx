@@ -26,8 +26,8 @@ export default function MyChart() {
    } satisfies ChartConfig;
 
    return (
-      <Card className="bg-white rounded-lg h-[100%]">
-         <ChartContainer config={chartConfig} className="h-[250px] w-full">
+      <Card className="flex flex-col justify-center p-1 bg-white rounded-lg h-[100%]">
+         <ChartContainer config={chartConfig} className="h-[280px] w-full">
             <BarChart accessibilityLayer data={chartData}>
                <CartesianGrid vertical={false} />
                <ChartTooltip content={<ChartTooltipContent />} />

@@ -43,7 +43,7 @@ export default function Component() {
          <CardHeader className="flex items-center pb-0 pt-2">
             <CardTitle>Førstegangskøbere vs. genkøbere</CardTitle>
          </CardHeader>
-         <CardContent className="flex flex-1 items-center max-h-[250px] pb-0">
+         <CardContent className="flex flex-1 items-center h-[250px] pb-0">
             <ChartContainer config={chartConfig} className="aspect-square h-[100%] w-full">
                <PieChart>
                   <ChartTooltip content={<ChartTooltipContent nameKey="count" hideLabel />} />

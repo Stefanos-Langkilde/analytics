@@ -76,13 +76,13 @@ export default function SalesLineChart() {
    }, 0);
 
    return (
-      <Card className="bg-white rounded-lg h-[100%]">
-         <CardHeader className="flex flex-row justify-between items-center" title="Dataset">
+      <Card className="flex flex-col justify-center bg-white rounded-lg h-[100%]">
+         <CardHeader className="flex flex-row justify-between items-center px-3 py-2" title="Dataset">
             <CardTitle>{totalAmount}</CardTitle>
             <RadioDropDown onChange={handleDropdownChange} />
          </CardHeader>
-         <CardContent>
-            <ChartContainer config={chartConfig} className="h-[200px] w-full">
+         <CardContent className="flex h-[230px] py-2 px-3">
+            <ChartContainer config={chartConfig} className="h-[100%] w-full">
                <LineChart
                   accessibilityLayer
                   data={chartData}
