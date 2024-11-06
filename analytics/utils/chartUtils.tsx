@@ -19,12 +19,6 @@ export const generateDateOrders = (from: Date, to: Date) => {
    return orders;
 };
 
-/// This function converts the value to a Danish text
-export const valueToDanishText: { [key: string]: string } = {
-   revenue: "Omsætning",
-   orders: "Ordrer",
-};
-
 /// This function aggregates the data by summing up the count for each buyerType
 export function summarizeBuyerTypeData(data: { buyerType: string; count: number; fill: string }[]) {
    return data.reduce((acc: { buyerType: string; count: number; fill: string }[], curr) => {
@@ -51,9 +45,15 @@ export const calculateTotalAmount = (chartData: ChartData[], dropdownValue: stri
 };
 ///----------------------------------------------
 
+/// This function converts the value to a Danish text
+export const valueToDanishText: { [key: string]: string } = {
+   revenue: "Omsætning",
+   orders: "Ordrer",
+};
+
 /// This hook manages the dropdown value state
 export const useDropdownValue = () => {
-   const [dropdownValue, setDropdownValue] = useState("");
+   const [dropdownValue, setDropdownValue] = useState("revenue");
    const handleDropdownChange = (value: string) => {
       setDropdownValue(value);
    };

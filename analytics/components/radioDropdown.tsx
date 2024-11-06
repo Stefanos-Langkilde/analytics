@@ -12,31 +12,27 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect, useState } from "react";
-
-const valueToDanishText = {
-   revenue: "Omsætning",
-   orders: "Ordrer",
-};
+import { useDropdownValue, valueToDanishText } from "@/utils/chartUtils";
+import { useEffect } from "react";
 
 export default function RadioDropdown({ onChange }: { onChange: (value: string) => void }) {
-   const [position, setPosition] = useState<keyof typeof valueToDanishText>("revenue");
+   const { dropdownValue, handleDropdownChange } = useDropdownValue();
 
    useEffect(() => {
-      onChange(position);
-   }, [position, onChange]);
+      onChange(dropdownValue);
+   }, [dropdownValue, onChange]);
 
    return (
       <DropdownMenu>
          <DropdownMenuTrigger asChild>
             <Button className="w-40 mt-0 md:w-56" variant="outline">
-               {valueToDanishText[position]}
+               {valueToDanishText[dropdownValue]}
             </Button>
          </DropdownMenuTrigger>
          <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Vælg data</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup value={position} onValueChange={value => setPosition(value as keyof typeof valueToDanishText)}>
+            <DropdownMenuRadioGroup value={dropdownValue} onValueChange={handleDropdownChange}>
                <DropdownMenuRadioItem value="revenue">Omsætning</DropdownMenuRadioItem>
                <DropdownMenuRadioItem value="orders">Ordrer</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
