@@ -53,6 +53,7 @@ export const valueToDanishText: { [key: string]: string } = {
 
 /// This hook manages the dropdown value state
 export const useDropdownValue = () => {
+   "use client";
    const [dropdownValue, setDropdownValue] = useState("revenue");
    const handleDropdownChange = (value: string) => {
       setDropdownValue(value);
