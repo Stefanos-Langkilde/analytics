@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 /// This function generates random orders for each day in the specified date range
@@ -53,8 +53,14 @@ export const valueToDanishText: { [key: string]: string } = {
 
 /// This hook manages the dropdown value state
 export const useDropdownValue = () => {
-   "use client";
-   const [dropdownValue, setDropdownValue] = useState("revenue");
+   const [dropdownValue, setDropdownValue] = useState<string | null>(null);
+
+   useEffect(() => {
+      if (dropdownValue === null) {
+         setDropdownValue("revenue");
+      }
+   }, [dropdownValue]);
+
    const handleDropdownChange = (value: string) => {
       setDropdownValue(value);
    };

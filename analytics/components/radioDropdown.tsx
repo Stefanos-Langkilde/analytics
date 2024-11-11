@@ -1,7 +1,5 @@
 "use client";
-
 import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import {
    DropdownMenu,
@@ -19,20 +17,22 @@ export default function RadioDropdown({ onChange }: { onChange: (value: string) 
    const { dropdownValue, handleDropdownChange } = useDropdownValue();
 
    useEffect(() => {
-      onChange(dropdownValue);
+      if (dropdownValue !== null) {
+         onChange(dropdownValue);
+      }
    }, [dropdownValue, onChange]);
 
    return (
       <DropdownMenu>
          <DropdownMenuTrigger asChild>
             <Button className="w-40 mt-0 md:w-56" variant="outline">
-               {valueToDanishText[dropdownValue]}
+               {dropdownValue ? valueToDanishText[dropdownValue] : "Loading..."}
             </Button>
          </DropdownMenuTrigger>
          <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Vælg data</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup value={dropdownValue} onValueChange={handleDropdownChange}>
+            <DropdownMenuRadioGroup value={dropdownValue || "revenue"} onValueChange={handleDropdownChange}>
                <DropdownMenuRadioItem value="revenue">Omsætning</DropdownMenuRadioItem>
                <DropdownMenuRadioItem value="orders">Ordrer</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>

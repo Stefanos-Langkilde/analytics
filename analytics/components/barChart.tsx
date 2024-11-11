@@ -36,7 +36,7 @@ export default function SalesLineChart() {
    } satisfies ChartConfig;
 
    // Calculate total amount for the selected value and date range
-   const totalAmount = calculateTotalAmount(chartData, dropdownValue);
+   const totalAmount = calculateTotalAmount(chartData, dropdownValue ?? "");
 
    return (
       <Card className="flex flex-col justify-center bg-white rounded-lg h-[100%]">
@@ -46,42 +46,46 @@ export default function SalesLineChart() {
          </CardHeader>
          <CardContent className="flex h-[230px] py-2 px-3">
             <ChartContainer config={chartConfig} className="h-[100%] w-full">
-               <BarChart
-                  accessibilityLayer
-                  data={chartData}
-                  margin={{
-                     left: 12,
-                     right: 12,
-                  }}
-               >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                     dataKey="date"
-                     tickLine={false}
-                     axisLine={false}
-                     tickMargin={2}
-                     minTickGap={100}
-                     tickFormatter={value => {
-                        const date = new Date(value);
-                        return date.toLocaleDateString("da-DK", {
-                           month: "short",
-                           day: "numeric",
-                        });
+               {dropdownValue ? (
+                  <BarChart
+                     accessibilityLayer
+                     data={chartData}
+                     margin={{
+                        left: 12,
+                        right: 12,
                      }}
-                  />
-                  <YAxis
-                     axisLine={false}
-                     tickLine={false}
-                     label={{
-                        value: valueToDanishText[dropdownValue],
-                        angle: -90,
-                        position: "insideLeft",
-                        style: { textAnchor: "middle" },
-                     }}
-                  />
-                  <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                  <Bar dataKey={dropdownValue} fill={`var(--color-${dropdownValue})`} radius={8} />
-               </BarChart>
+                  >
+                     <CartesianGrid vertical={false} />
+                     <XAxis
+                        dataKey="date"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={2}
+                        minTickGap={100}
+                        tickFormatter={value => {
+                           const date = new Date(value);
+                           return date.toLocaleDateString("da-DK", {
+                              month: "short",
+                              day: "numeric",
+                           });
+                        }}
+                     />
+                     <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        label={{
+                           value: valueToDanishText[dropdownValue],
+                           angle: -90,
+                           position: "insideLeft",
+                           style: { textAnchor: "middle" },
+                        }}
+                     />
+                     <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                     <Bar dataKey={dropdownValue} fill={`var(--color-${dropdownValue})`} radius={8} />
+                  </BarChart>
+               ) : (
+                  <p>Loading...</p>
+               )}
             </ChartContainer>
          </CardContent>
       </Card>
