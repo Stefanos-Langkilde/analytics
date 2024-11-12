@@ -66,3 +66,22 @@ export const useDropdownValue = () => {
    };
    return { dropdownValue, handleDropdownChange };
 };
+
+/// This function generates descriptive text based on the dropdown value and total amount
+export const generateDescriptiveText = (dropdownValue: string | null, totalAmount: number): string => {
+   if (!dropdownValue) {
+      return "Loading...";
+   }
+
+   const label = valueToDanishText[dropdownValue];
+   const unit = label === "Omsætning" ? "DKK" : "";
+
+   switch (dropdownValue) {
+      case "orders":
+         return `Total ordrer for periode: ${totalAmount}`;
+      case "revenue":
+         return `Total omsætning for periode: ${totalAmount} ${unit}`;
+      default:
+         return `Total ${label}: ${totalAmount}`;
+   }
+};
