@@ -3,7 +3,7 @@ import { format } from "date-fns";
 
 /// This function generates random orders for each day in the specified date range
 export const generateDateOrders = (from: Date, to: Date) => {
-   const orders: { [key: string]: { orders: number; revenue: number; sales: number } } = {};
+   const orders: { [key: string]: { orders: number; revenue: number } } = {};
    const startDate = new Date(from);
    const endDate = new Date(to);
 
@@ -12,7 +12,6 @@ export const generateDateOrders = (from: Date, to: Date) => {
       orders[formattedDate] = {
          orders: Math.floor(Math.random() * 100), // Random order count between 0 and 99
          revenue: Math.floor(Math.random() * 1000), // Random revenue between 0 and 999
-         sales: Math.floor(Math.random() * 50), // Random sales between 0 and 99
       };
    }
 

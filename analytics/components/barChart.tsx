@@ -21,7 +21,6 @@ export default function SalesLineChart() {
       date: new Date(date).getTime(),
       orders: dateOrders[date].orders,
       revenue: dateOrders[date].revenue,
-      sales: dateOrders[date].sales,
    }));
 
    const chartConfig = {
