@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import getDateRangeFromParams from "@/utils/getDateRangeFromParams";
 import RadioDropDown from "@/components/radioDropdown";
-import { calculateTotalAmount, generateDescriptiveText, useDropdownValue } from "@/utils/chartUtils";
+import { calculateAmount, generateDescriptiveText, useDropdownValue } from "@/utils/chartUtils";
 import { generateDateOrders, valueToDanishText } from "@/utils/chartUtils";
 
 export default function SalesLineChart() {
@@ -35,7 +35,7 @@ export default function SalesLineChart() {
    } satisfies ChartConfig;
 
    // Calculate total amount for the selected value and date range
-   const totalAmount = calculateTotalAmount(chartData, dropdownValue ?? "");
+   const totalAmount = calculateAmount(chartData, dropdownValue ?? "");
 
    return (
       <Card className="flex flex-col justify-center bg-white rounded-lg h-[100%]">
