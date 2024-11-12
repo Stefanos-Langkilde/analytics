@@ -34,7 +34,7 @@ export default function RadioDropdown({ onChange }: { onChange: (value: string) 
             <DropdownMenuSeparator />
             <DropdownMenuRadioGroup value={dropdownValue || "revenue"} onValueChange={handleDropdownChange}>
                <DropdownMenuRadioItem value="revenue">Omsætning</DropdownMenuRadioItem>
-               <DropdownMenuRadioItem value="orders">Ordrer</DropdownMenuRadioItem>
+               <DropdownMenuRadioItem value="orders">Gennemsnitlig ordreværdi</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
          </DropdownMenuContent>
       </DropdownMenu>

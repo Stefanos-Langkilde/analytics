@@ -7,11 +7,11 @@ export const generateDateOrders = (from: Date, to: Date) => {
    const startDate = new Date(from);
    const endDate = new Date(to);
 
-   for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+   for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate())) {
       const formattedDate = format(date, "yyyy-MM-dd");
       orders[formattedDate] = {
-         orders: Math.floor(Math.random() * 100), // Random order count between 0 and 99
-         revenue: Math.floor(Math.random() * 1000), // Random revenue between 0 and 999
+         orders: Math.floor(Math.random() * 1000),
+         revenue: Math.floor(Math.random() * 1000),
       };
    }
 
@@ -31,23 +31,33 @@ export function summarizeBuyerTypeData(data: { buyerType: string; count: number;
    }, []);
 }
 
-/// This function calculates the total amount for the selected value and date range
+/// This function calculates the total or average amount for the selected value and date range
 interface ChartData {
    [key: string]: number;
 }
 
-export const calculateTotalAmount = (chartData: ChartData[], dropdownValue: string) => {
-   return chartData.reduce((acc, curr) => {
+export const calculateAmount = (chartData: ChartData[], dropdownValue: string) => {
+   const totalAmount = chartData.reduce((acc, curr) => {
       const value = curr[dropdownValue as keyof typeof curr];
       return acc + (typeof value === "number" ? value : 0);
    }, 0);
+
+   // Calculate average for orders
+   let result = totalAmount;
+   if (dropdownValue === "orders") {
+      result = totalAmount / chartData.length;
+   }
+
+   // Limit to two decimals
+   return parseFloat(result.toFixed(2));
 };
+
 ///----------------------------------------------
 
 /// This function converts the value to a Danish text
 export const valueToDanishText: { [key: string]: string } = {
    revenue: "Omsætning",
-   orders: "Ordrer",
+   orders: "Gennemsnitlig ordreværdi",
 };
 
 /// This hook manages the dropdown value state
@@ -73,13 +83,13 @@ export const generateDescriptiveText = (dropdownValue: string | null, totalAmoun
    }
 
    const label = valueToDanishText[dropdownValue];
-   const unit = label === "Omsætning" ? "DKK" : "";
+   const currency = "kr.";
 
    switch (dropdownValue) {
       case "orders":
-         return `Total ordrer for periode: ${totalAmount}`;
+         return `Gennemsnitligt ordrer værdi for periode: ${totalAmount} ${currency}`;
       case "revenue":
-         return `Total omsætning for periode: ${totalAmount} ${unit}`;
+         return `Total omsætning for periode: ${totalAmount} ${currency}`;
       default:
          return `Total ${label}: ${totalAmount}`;
    }
