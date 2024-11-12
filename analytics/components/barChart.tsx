@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import getDateRangeFromParams from "@/utils/getDateRangeFromParams";
 import RadioDropDown from "@/components/radioDropdown";
-import { calculateTotalAmount, useDropdownValue } from "@/utils/chartUtils";
+import { calculateTotalAmount, generateDescriptiveText, useDropdownValue } from "@/utils/chartUtils";
 import { generateDateOrders, valueToDanishText } from "@/utils/chartUtils";
 
 export default function SalesLineChart() {
@@ -41,7 +41,7 @@ export default function SalesLineChart() {
    return (
       <Card className="flex flex-col justify-center bg-white rounded-lg h-[100%]">
          <CardHeader className="flex flex-row justify-between items-center px-3 py-2" title="Dataset">
-            <CardTitle>{totalAmount}</CardTitle>
+            <CardTitle>{generateDescriptiveText(dropdownValue, totalAmount)}</CardTitle>
             <RadioDropDown onChange={handleDropdownChange} />
          </CardHeader>
          <CardContent className="flex h-[230px] py-2 px-3">
