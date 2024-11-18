@@ -10,18 +10,9 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDropdownValue, valueToDanishText } from "@/utils/chartUtils";
-import { useEffect } from "react";
+import { valueToDanishText } from "@/utils/chartUtils";
 
-export default function RadioDropdown({ onChange }: { onChange: (value: string) => void }) {
-   const { dropdownValue, handleDropdownChange } = useDropdownValue();
-
-   useEffect(() => {
-      if (dropdownValue !== null) {
-         onChange(dropdownValue);
-      }
-   }, [dropdownValue, onChange]);
-
+export default function RadioDropdown({ onChange, dropdownValue }: { dropdownValue: string; onChange: (value: string) => void }) {
    return (
       <DropdownMenu>
          <DropdownMenuTrigger asChild>
@@ -32,9 +23,10 @@ export default function RadioDropdown({ onChange }: { onChange: (value: string) 
          <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Vælg data</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup value={dropdownValue || "revenue"} onValueChange={handleDropdownChange}>
+            <DropdownMenuRadioGroup value={dropdownValue} onValueChange={onChange}>
                <DropdownMenuRadioItem value="revenue">Omsætning</DropdownMenuRadioItem>
-               <DropdownMenuRadioItem value="orders">Gennemsnitlig ordreværdi</DropdownMenuRadioItem>
+               <DropdownMenuRadioItem value="amount">Ordre antal</DropdownMenuRadioItem>
+               <DropdownMenuRadioItem value="averageOrderValue">Gennemsnitlig ordreværdi</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
          </DropdownMenuContent>
       </DropdownMenu>

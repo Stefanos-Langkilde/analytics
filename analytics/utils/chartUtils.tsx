@@ -1,24 +1,4 @@
-import { useEffect, useState } from "react";
-import { format } from "date-fns";
-
-/// This function generates random orders for each day in the specified date range
-export const generateDateOrders = (from: Date, to: Date) => {
-   const orders: { [key: string]: { orders: number; revenue: number } } = {};
-   const startDate = new Date(from);
-   const endDate = new Date(to);
-
-   for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate())) {
-      const formattedDate = format(date, "yyyy-MM-dd");
-      orders[formattedDate] = {
-         orders: Math.floor(Math.random() * 1000),
-         revenue: Math.floor(Math.random() * 1000),
-      };
-   }
-
-   return orders;
-};
-
-/// This function aggregates the data by summing up the count for each buyerType
+// This function aggregates the data by summing up the count for each buyerType for the pie chart
 export function summarizeBuyerTypeData(data: { buyerType: string; count: number; fill: string }[]) {
    return data.reduce((acc: { buyerType: string; count: number; fill: string }[], curr) => {
       const existing = acc.find(item => item.buyerType === curr.buyerType);
@@ -31,52 +11,31 @@ export function summarizeBuyerTypeData(data: { buyerType: string; count: number;
    }, []);
 }
 
-/// This function calculates the total or average amount for the selected value and date range
-interface ChartData {
-   [key: string]: number;
-}
-
-export const calculateAmount = (chartData: ChartData[], dropdownValue: string) => {
-   const totalAmount = chartData.reduce((acc, curr) => {
-      const value = curr[dropdownValue as keyof typeof curr];
-      return acc + (typeof value === "number" ? value : 0);
-   }, 0);
-
-   // Calculate average for orders
-   let result = totalAmount;
-   if (dropdownValue === "orders") {
-      result = totalAmount / chartData.length;
+export const calculateAmount = (data: { date: string; revenue: number; amount: number }[], dropdownValue: string): number => {
+   if (!Array.isArray(data) || data.length === 0) {
+      console.warn("Data is invalid or empty:", data);
+      return 0; // Handle empty or invalid data
    }
 
-   // Limit to two decimals
-   return parseFloat(result.toFixed(2));
+   if (dropdownValue === "averageOrderValue") {
+      const totalRevenue = data.reduce((sum, item) => sum + item.revenue, 0); // Sum up the `total`
+      const totalOrders = data.reduce((sum, item) => sum + item.amount, 0); // Sum up the `orders`
+      return totalOrders > 0 ? totalRevenue / totalOrders : 0; // Calculate average
+   } else if (dropdownValue === "revenue" || dropdownValue === "amount") {
+      return data.reduce((sum, item) => sum + (item[dropdownValue] || 0), 0);
+   } else {
+      return 0;
+   }
 };
 
-///----------------------------------------------
-
-/// This function converts the value to a Danish text
+// This function converts the value to a Danish text
 export const valueToDanishText: { [key: string]: string } = {
    revenue: "Omsætning",
-   orders: "Gennemsnitlig ordreværdi",
+   amount: "Ordre antal",
+   averageOrderValue: "Gennemsnitlig ordreværdi",
 };
 
-/// This hook manages the dropdown value state
-export const useDropdownValue = () => {
-   const [dropdownValue, setDropdownValue] = useState<string | null>(null);
-
-   useEffect(() => {
-      if (dropdownValue === null) {
-         setDropdownValue("revenue");
-      }
-   }, [dropdownValue]);
-
-   const handleDropdownChange = (value: string) => {
-      setDropdownValue(value);
-   };
-   return { dropdownValue, handleDropdownChange };
-};
-
-/// This function generates descriptive text based on the dropdown value and total amount
+// This function generates descriptive text based on the dropdown value and total amount
 export const generateDescriptiveText = (dropdownValue: string | null, totalAmount: number): string => {
    if (!dropdownValue) {
       return "Loading...";
@@ -85,12 +44,16 @@ export const generateDescriptiveText = (dropdownValue: string | null, totalAmoun
    const label = valueToDanishText[dropdownValue];
    const currency = "kr.";
 
+   const amountText = totalAmount.toFixed(2);
+
    switch (dropdownValue) {
-      case "orders":
-         return `Gennemsnitligt ordrer værdi for periode: ${totalAmount} ${currency}`;
+      case "amount":
+         return `Total ordrer for periode: ${amountText}`;
       case "revenue":
-         return `Total omsætning for periode: ${totalAmount} ${currency}`;
+         return `Total omsætning for periode: ${amountText} ${currency}`;
+      case "averageOrderValue":
+         return `Gennemsnitlig ordreværdi for periode: ${amountText} ${currency}`;
       default:
-         return `Total ${label}: ${totalAmount}`;
+         return `Total ${label}: ${amountText}`;
    }
 };

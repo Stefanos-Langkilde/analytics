@@ -1,7 +1,8 @@
+"use client";
 import { parseISO } from "date-fns";
 import { useSearchParams } from "next/navigation";
 
-export default function GetDateRangeFromParams() {
+export function GetDateRangeFromParams() {
    const searchParams = useSearchParams();
 
    // Get the from and to parameters from the URL
@@ -24,4 +25,23 @@ export default function GetDateRangeFromParams() {
    }
 
    return { fromDate, toDate };
+}
+
+export function useDateRangeFromParams() {
+   const params = useSearchParams();
+   const startDate = params.get("from");
+   const endDate = params.get("to");
+   return { startDate, endDate };
+}
+
+export function filterDataByDateRange(data: { date: string }[], startDate?: string, endDate?: string) {
+   if (!startDate || !endDate) return data;
+
+   const start = new Date(startDate).getTime();
+   const end = new Date(endDate).getTime();
+
+   return data.filter(item => {
+      const itemDate = new Date(item.date).getTime();
+      return itemDate >= start && itemDate <= end;
+   });
 }

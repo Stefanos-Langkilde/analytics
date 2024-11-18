@@ -2,29 +2,40 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import getDateRangeFromParams from "@/utils/getDateRangeFromParams";
 import RadioDropDown from "@/components/radioDropdown";
-import { calculateAmount, generateDescriptiveText, useDropdownValue } from "@/utils/chartUtils";
-import { generateDateOrders, valueToDanishText } from "@/utils/chartUtils";
+import { calculateAmount, generateDescriptiveText, valueToDanishText } from "@/utils/chartUtils";
+import { useEffect, useState } from "react";
 
-export default function SalesLineChart() {
-   // Get the date range from URL parameters
-   const { fromDate, toDate } = getDateRangeFromParams();
+interface ChartData {
+   date: string;
+   revenue: number;
+   amount: number;
+   avarageOrderValue?: number;
+}
 
-   // Get the dropdown value and handle change function from
-   const { dropdownValue, handleDropdownChange } = useDropdownValue();
+export default function SalesLineChart({ data }: { data: ChartData[] }) {
+   const [dropdownValue, setDropdownValue] = useState<string>("revenue");
+   const [processedData, setProcessedData] = useState<ChartData[]>([]);
 
-   // Generate the orders for the specified date range
-   const dateOrders = generateDateOrders(fromDate, toDate);
+   useEffect(() => {
+      if (dropdownValue === "averageOrderValue") {
+         // Add the calculated averageOrderValue to each day's data
+         const updatedData = data.map(item => ({
+            ...item,
+            averageOrderValue: item.amount > 0 ? parseFloat((item.revenue / item.amount).toFixed(2)) : 0,
+         }));
+         setProcessedData(updatedData);
+      } else {
+         setProcessedData(data); // Use original data for other dropdown values
+      }
+   }, [data, dropdownValue]);
 
-   const chartData = Object.keys(dateOrders).map(date => ({
-      date: new Date(date).getTime(),
-      orders: dateOrders[date].orders,
-      revenue: dateOrders[date].revenue,
-   }));
+   const handleDropdownChange = (value: string) => {
+      setDropdownValue(value);
+   };
 
    const chartConfig = {
-      orders: {
+      amount: {
          label: "Ordrer",
          color: "hsl(var(--chart-2))",
       },
@@ -32,23 +43,26 @@ export default function SalesLineChart() {
          label: "Omsætning",
          color: "hsl(var(--chart-1))",
       },
+      averageOrderValue: {
+         label: "Gennemsnitlig ordreværdi",
+         color: "hsl(var(--chart-4))",
+      },
    } satisfies ChartConfig;
 
-   // Calculate total amount for the selected value and date range
-   const totalAmount = calculateAmount(chartData, dropdownValue ?? "");
+   const totalAmount = calculateAmount(data, dropdownValue);
 
    return (
       <Card className="flex flex-col justify-center bg-white rounded-lg h-[100%]">
          <CardHeader className="flex flex-row justify-between items-center px-3 py-2" title="Dataset">
             <CardTitle>{generateDescriptiveText(dropdownValue, totalAmount)}</CardTitle>
-            <RadioDropDown onChange={handleDropdownChange} />
+            <RadioDropDown onChange={handleDropdownChange} dropdownValue={dropdownValue} />
          </CardHeader>
          <CardContent className="flex h-[230px] py-2 px-3">
             <ChartContainer config={chartConfig} className="h-[100%] w-full">
-               {dropdownValue ? (
+               {data.length > 0 ? (
                   <BarChart
                      accessibilityLayer
-                     data={chartData}
+                     data={processedData}
                      margin={{
                         left: 12,
                         right: 12,
