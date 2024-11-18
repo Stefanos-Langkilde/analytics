@@ -20,7 +20,7 @@ export default async function Home() {
    // the object should have an id, how many columns it should span (max 12), and type property.
    // position the chart by changing the order of the objects in the array, first item will be on top
    const charts = [
-      // { id: 1, span: 12, type: "profitsChart" },
+      { id: 1, span: 12, type: "profitsChart" },
       { id: 5, span: 8, type: "ordersMade" },
       { id: 6, span: 4, type: "firstVersusRebuyers" },
       { id: 2, span: 12, type: "productPopularity" },
@@ -60,7 +60,7 @@ function RenderChart(chart: string, chartData: ChartData[]) {
          return <MyChart2 />;
       case "totalSales":
          return <MyChart3 />;
-      case "salesChart":
+      case "profitsChart":
          return <ProfitsChart data={chartData} />;
       case "ordersMade":
          return <BarChart data={chartData} />;
