@@ -1,6 +1,6 @@
 [
    {
-      "dataset": [
+      "currentYearData": [
          {
             "date": "2024-11-01",
             "revenue": 1014.9,
@@ -52,7 +52,7 @@
             "amount": 5
          }
       ],
-      "compare": [
+      "previousYearData": [
          {
             "date": "2023-11-01",
             "revenue": 814.5,
