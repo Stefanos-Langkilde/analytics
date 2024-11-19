@@ -8,6 +8,7 @@ import ProfitsChart from "@/components/profitsChart";
 import BarChart from "@/components/barChart";
 import PieChart from "@/components/pieChart";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import CompareDatepicker from "@/components/compareDatepicker";
 
 interface ChartData {
    date: string;
@@ -37,6 +38,7 @@ export default async function Home() {
             <p>Here you can see all the data you need to make informed decisions.</p>
             <div className={styles.headerButtons}>
                <Datepicker />
+               <CompareDatepicker />
             </div>
          </div>
          <div className={styles.chartGrid}>
