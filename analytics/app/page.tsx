@@ -9,19 +9,16 @@ import BarChart from "@/components/barChart";
 import PieChart from "@/components/pieChart";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import CompareDatepicker from "@/components/compareDatepicker";
-
-interface ChartData {
-   date: string;
-   revenue: number;
-   amount: number;
-}
+import CompareProfits from "@/components/compareProfits";
+import { ChartData } from "@/types/chartData";
 
 export default async function Home() {
    // add a new chart to the dashboard by adding a new object to the charts array
    // the object should have an id, how many columns it should span (max 12), and type property.
    // position the chart by changing the order of the objects in the array, first item will be on top
    const charts = [
-      { id: 1, span: 12, type: "profitsChart" },
+      { id: 7, span: 12, type: "compareProfitsChart" },
+      // { id: 1, span: 12, type: "profitsChart" },
       { id: 5, span: 8, type: "ordersMade" },
       { id: 6, span: 4, type: "firstVersusRebuyers" },
       { id: 2, span: 12, type: "productPopularity" },
@@ -68,6 +65,8 @@ function RenderChart(chart: string, chartData: ChartData[]) {
          return <BarChart data={chartData} />;
       case "firstVersusRebuyers":
          return <PieChart />;
+      case "compareProfitsChart":
+         return <CompareProfits />;
       default:
          return null;
    }

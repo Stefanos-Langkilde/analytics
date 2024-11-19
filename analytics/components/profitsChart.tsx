@@ -5,13 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import RadioDropDown from "@/components/radioDropdown";
 import { calculateAmount, generateDescriptiveText, valueToDanishText } from "@/utils/chartUtils";
-
-interface ChartData {
-   date: string;
-   revenue: number;
-   amount: number;
-   avarageOrderValue?: number;
-}
+import { ChartData } from "@/types/chartData";
 
 export default function SalesLineChart({ data }: { data: ChartData[] }) {
    const [dropdownValue, setDropdownValue] = useState<string>("revenue");
