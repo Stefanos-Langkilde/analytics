@@ -1,5 +1,5 @@
 import styles from "./mainPageStyle.module.scss";
-import { fetchMockData } from "./action";
+import { fetchComparisonMockData, fetchMockData } from "./action";
 import Datepicker from "../components/datepicker";
 import MyChart2 from "@/components/myChart2";
 import MyChart from "../components/myChart";
@@ -13,9 +13,9 @@ import CompareProfits from "@/components/compareProfits";
 import { ChartData } from "@/types/chartData";
 
 export default async function Home() {
-   // add a new chart to the dashboard by adding a new object to the charts array
-   // the object should have an id, how many columns it should span (max 12), and type property.
-   // position the chart by changing the order of the objects in the array, first item will be on top
+   /// add a new chart to the dashboard by adding a new object to the charts array
+   /// the object should have an id, how many columns it should span (max 12), and type property.
+   /// position the chart by changing the order of the objects in the array, first item will be on top
    const charts = [
       { id: 7, span: 12, type: "compareProfitsChart" },
       // { id: 1, span: 12, type: "profitsChart" },
@@ -27,6 +27,8 @@ export default async function Home() {
    ];
 
    const chartData = await fetchMockData();
+
+   const comparedata = await fetchComparisonMockData();
 
    return (
       <main className={styles.wrapper}>
@@ -41,7 +43,7 @@ export default async function Home() {
          <div className={styles.chartGrid}>
             {charts.map(chart => (
                <div key={chart.id} className={`${styles.chartGridItem} ${styles[`chartGridItem--span-${chart.span}`]}`}>
-                  <ErrorBoundary>{RenderChart(chart.type, chartData)}</ErrorBoundary>
+                  <ErrorBoundary>{RenderChart(chart.type, chartData, comparedata)}</ErrorBoundary>
                </div>
             ))}
          </div>
@@ -49,9 +51,10 @@ export default async function Home() {
    );
 }
 
-//This function will render the chart based on the type property of the chart object.
-//If you added a new chart type, you will need to add a new case to this function
-function RenderChart(chart: string, chartData: ChartData[]) {
+///This function will render the chart based on the type property of the chart object.
+///If you added a new chart type, you will need to add a new case to this function
+///to render the new chart component.
+function RenderChart(chart: string, chartData: ChartData[], compareData: { currentYearData: ChartData[]; previousYearData: ChartData[] }) {
    switch (chart) {
       case "productPopularity":
          return <MyChart />;
@@ -66,7 +69,7 @@ function RenderChart(chart: string, chartData: ChartData[]) {
       case "firstVersusRebuyers":
          return <PieChart />;
       case "compareProfitsChart":
-         return <CompareProfits />;
+         return <CompareProfits data={compareData} />;
       default:
          return null;
    }

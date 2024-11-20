@@ -29,7 +29,8 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
       }
    }, []);
 
-   const handleSubmit = () => {
+   const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
       if (compareDate?.from && compareDate?.to) {
          const url = new URL(window.location.href);
          const urlParams = new URLSearchParams(url.search);
