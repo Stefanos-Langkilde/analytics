@@ -39,7 +39,7 @@ export default function SalesLineChart({ data }: { data: ChartData[] }) {
       },
       averageOrderValue: {
          label: "Gennemsnitlig ordreværdi",
-         color: "hsl(var(--chart-4))",
+         color: "hsl(var(--chart-3))",
       },
    } satisfies ChartConfig;
 
