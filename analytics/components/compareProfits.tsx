@@ -16,43 +16,56 @@ interface CompareProfitsProps {
 }
 
 export default function CompareProfits({ data }: CompareProfitsProps) {
+   // Dynamically determine the years in the dataset
+   const years = [...new Set([...data.currentYearData, ...data.previousYearData].map(item => new Date(item.date).getFullYear()))];
+
+   // Ensure there are exactly two years (current year and comparison year)
+   const [currentYear, comparisonYear] = years.sort((a, b) => b - a); // Sort descending to get the most recent years
+
+   // Combine data dynamically for the two years
+   type CombinedData = {
+      fullDate: string;
+   } & Record<string, number>; // Dynamic keys for revenue are numbers
+
    const combinedData = [...data.currentYearData, ...data.previousYearData].reduce((acc, item) => {
-      const fullDate = new Date(item.date).toLocaleDateString("en-US", { day: "2-digit", month: "short" });
+      const fullDate = new Date(item.date).toLocaleDateString("en-US", { day: "2-digit", month: "short" }); // e.g., "05-Nov"
       const year = new Date(item.date).getFullYear();
       const target = acc.find(entry => entry.fullDate === fullDate);
 
       if (target) {
          // Update existing entry
-         if (year === 2024) target.currentYearRevenue += item.revenue;
-         if (year === 2023) target.previousYearRevenue += item.revenue;
+         target[`${year}Revenue`] = (target[`${year}Revenue`] || 0) + item.revenue;
       } else {
          // Add a new entry
          acc.push({
             fullDate,
-            currentYearRevenue: year === 2024 ? item.revenue : 0,
-            previousYearRevenue: year === 2023 ? item.revenue : 0,
-         });
+            [`${currentYear}Revenue`]: year === currentYear ? item.revenue : 0,
+            [`${comparisonYear}Revenue`]: year === comparisonYear ? item.revenue : 0,
+         } as CombinedData);
       }
 
       return acc;
-   }, [] as { fullDate: string; currentYearRevenue: number; previousYearRevenue: number }[]);
+   }, [] as CombinedData[]);
 
+   // Generate dynamic chart configuration
    const chartConfig = {
-      currentYearRevenue: {
-         label: "2024 Revenue",
+      [`${currentYear}Revenue`]: {
+         label: `${currentYear} Revenue`,
          color: "hsl(var(--chart-1))",
       },
-      previousYearRevenue: {
-         label: "2023 Revenue",
+      [`${comparisonYear}Revenue`]: {
+         label: `${comparisonYear} Revenue`,
          color: "hsl(var(--chart-2))",
       },
    } satisfies ChartConfig;
 
    return (
       <Card className="flex flex-col justify-center bg-white rounded-lg h-[100%]">
-         <CardHeader className="flex flex-row justify-between items-center px-3 py-2" title="Dataset">
-            <CardTitle>Area Chart - Daily Comparison</CardTitle>
-            <CardDescription>Showing daily revenue comparison for 2023 and 2024</CardDescription>
+         <CardHeader className="flex flex-col justify-start items-start px-3 py-2" title="Dataset">
+            <CardTitle>Sammenligning af omsætning for valgt periode</CardTitle>
+            <CardDescription>
+               Sammenligner {currentYear} og {comparisonYear}
+            </CardDescription>
          </CardHeader>
          <CardContent className="flex h-[230px] py-2 px-3">
             <ChartContainer config={chartConfig} className="h-[100%] w-full">
@@ -69,28 +82,28 @@ export default function CompareProfits({ data }: CompareProfitsProps) {
                   <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
                   <defs>
                      <linearGradient id="fillCurrentYear" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="var(--color-currentYearRevenue)" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="var(--color-currentYearRevenue)" stopOpacity={0.1} />
+                        <stop offset="5%" stopColor={`var(--color-${currentYear}Revenue)`} stopOpacity={0.8} />
+                        <stop offset="95%" stopColor={`var(--color-${currentYear}Revenue)`} stopOpacity={0.1} />
                      </linearGradient>
                      <linearGradient id="fillPreviousYear" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="var(--color-previousYearRevenue)" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="var(--color-previousYearRevenue)" stopOpacity={0.1} />
+                        <stop offset="5%" stopColor={`var(--color-${comparisonYear}Revenue)`} stopOpacity={0.8} />
+                        <stop offset="95%" stopColor={`var(--color-${comparisonYear}Revenue)`} stopOpacity={0.1} />
                      </linearGradient>
                   </defs>
                   <Area
-                     dataKey="currentYearRevenue"
+                     dataKey={`${currentYear}Revenue`}
                      type="natural"
                      fill="url(#fillCurrentYear)"
                      fillOpacity={0.4}
-                     stroke="var(--color-currentYearRevenue)"
+                     stroke={`var(--color-${currentYear}Revenue)`}
                      stackId="a"
                   />
                   <Area
-                     dataKey="previousYearRevenue"
+                     dataKey={`${comparisonYear}Revenue`}
                      type="natural"
                      fill="url(#fillPreviousYear)"
                      fillOpacity={0.4}
-                     stroke="var(--color-previousYearRevenue)"
+                     stroke={`var(--color-${comparisonYear}Revenue)`}
                      stackId="b"
                   />
                </AreaChart>
