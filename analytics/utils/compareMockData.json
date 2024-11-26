@@ -1,0 +1,108 @@
+[
+   {
+      "currentYearData": [
+         {
+            "date": "2024-11-01",
+            "revenue": 1014.9,
+            "amount": 4
+         },
+         {
+            "date": "2024-11-02",
+            "revenue": 946.4,
+            "amount": 3
+         },
+         {
+            "date": "2024-11-03",
+            "revenue": 1308.7,
+            "amount": 4
+         },
+         {
+            "date": "2024-11-04",
+            "revenue": 8806.5,
+            "amount": 30
+         },
+         {
+            "date": "2024-11-05",
+            "revenue": 11361.8,
+            "amount": 34
+         },
+         {
+            "date": "2024-11-06",
+            "revenue": 17402.7,
+            "amount": 59
+         },
+         {
+            "date": "2024-11-07",
+            "revenue": 3159.2,
+            "amount": 11
+         },
+         {
+            "date": "2024-11-08",
+            "revenue": 1171.3,
+            "amount": 7
+         },
+         {
+            "date": "2024-11-09",
+            "revenue": 279.0,
+            "amount": 1
+         },
+         {
+            "date": "2024-11-10",
+            "revenue": 2272.4,
+            "amount": 5
+         }
+      ],
+      "previousYearData": [
+         {
+            "date": "2022-11-01",
+            "revenue": 814.5,
+            "amount": 3
+         },
+         {
+            "date": "2022-11-02",
+            "revenue": 925.6,
+            "amount": 4
+         },
+         {
+            "date": "2022-11-03",
+            "revenue": 1204.3,
+            "amount": 5
+         },
+         {
+            "date": "2022-11-04",
+            "revenue": 932.0,
+            "amount": 2
+         },
+         {
+            "date": "2022-11-05",
+            "revenue": 1742.6,
+            "amount": 8
+         },
+         {
+            "date": "2022-11-06",
+            "revenue": 1350.4,
+            "amount": 6
+         },
+         {
+            "date": "2022-11-07",
+            "revenue": 1549.3,
+            "amount": 7
+         },
+         {
+            "date": "2022-11-08",
+            "revenue": 1034.1,
+            "amount": 4
+         },
+         {
+            "date": "2022-11-09",
+            "revenue": 859.3,
+            "amount": 3
+         },
+         {
+            "date": "2022-11-10",
+            "revenue": 1732.7,
+            "amount": 9
+         }
+      ]
+   }
+]
