@@ -1,5 +1,7 @@
 "use server";
 import { promises as fs } from "fs";
+import { console } from "inspector";
+import { redirect } from "next/navigation";
 
 //fetch mock data
 export async function fetchMockData() {
@@ -24,10 +26,33 @@ export async function fetchComparisonMockData() {
 
       return {
          currentYearData: data[0].currentYearData,
-         previousYearData: data[0].previousYearData
+         previousYearData: data[0].previousYearData,
       };
    } catch (error) {
       console.error("Failed to fetch comparison mock data:", error);
       return { currentYearData: [], previousYearData: [] };
    }
+}
+
+///Set the URL params to the selected date range
+export async function setUrlParams(formData: FormData) {
+   const from = formData.get("from");
+   const to = formData.get("to");
+   const compareFrom = formData.get("compareFrom");
+   const compareTo = formData.get("compareTo");
+
+   let url = "/?";
+
+   if (from && to) {
+      url += `from=${from}&to=${to}`;
+   }
+
+   if (compareFrom && compareTo) {
+      if (url.length > 2) {
+         url += "&";
+      }
+      url += `compareFrom=${compareFrom}&compareTo=${compareTo}`;
+   }
+
+   redirect(url);
 }

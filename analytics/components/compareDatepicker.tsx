@@ -9,15 +9,20 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useEffect } from "react";
+import { setUrlParams } from "@/app/action";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivElement>) {
-   const [compareDate, setCompareDate] = React.useState<DateRange | undefined>(undefined);
+   const [compareDate, setCompareDate] = useState<DateRange | undefined>(undefined);
+   const from = useSearchParams().get("from");
+   const to = useSearchParams().get("to");
 
    useEffect(() => {
       const urlParams = new URLSearchParams(window.location.search);
       const from = urlParams.get("compareFrom");
       const to = urlParams.get("compareTo");
+
       if (from && to) {
          const fromDate = new Date(from);
          const toDate = new Date(to);
@@ -28,18 +33,6 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
          setCompareDate({ from: addDays(fromDate, -7), to: addYears(toDate, -1) });
       }
    }, []);
-
-   const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      if (compareDate?.from && compareDate?.to) {
-         const url = new URL(window.location.href);
-         const urlParams = new URLSearchParams(url.search);
-         urlParams.set("compareFrom", format(compareDate.from, "yyyy-MM-dd"));
-         urlParams.set("compareTo", format(compareDate.to, "yyyy-MM-dd"));
-         url.search = urlParams.toString();
-         window.history.pushState({}, "", url.toString());
-      }
-   };
 
    return (
       <div className={cn("grid gap-2", className)}>
@@ -74,7 +67,13 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                   onSelect={setCompareDate}
                   numberOfMonths={2}
                />
-               <form className="mb-2 ml-2" onSubmit={handleSubmit}>
+               <form className="mb-2 ml-2" action={setUrlParams}>
+                  {from && to && (
+                     <>
+                        <input type="hidden" name="from" value={from} />
+                        <input type="hidden" name="to" value={to} />
+                     </>
+                  )}
                   <input type="hidden" name="compareFrom" value={compareDate?.from ? format(compareDate.from, "yyyy-MM-dd") : ""} />
                   <input type="hidden" name="compareTo" value={compareDate?.to ? format(compareDate.to, "yyyy-MM-dd") : ""} />
                   <Button type="submit">Submit</Button>
