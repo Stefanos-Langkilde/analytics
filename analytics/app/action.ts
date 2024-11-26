@@ -56,3 +56,14 @@ export async function setUrlParams(formData: FormData) {
 
    redirect(url);
 }
+
+export async function createQueryString(searchParams: string, name: string, value: string): Promise<string> {
+   // Convert the existing query string into a URLSearchParams object
+   const params = new URLSearchParams(searchParams);
+
+   // Set or update the new key-value pair
+   params.set(name, value);
+
+   // Return the updated query string
+   return `?${params.toString()}`;
+}

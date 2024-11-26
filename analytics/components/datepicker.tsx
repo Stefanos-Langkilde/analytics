@@ -9,27 +9,53 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useEffect } from "react";
-import { setUrlParams } from "@/app/action";
+import { useEffect, useState } from "react";
+import { createQueryString } from "@/app/action";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivElement>) {
-   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
+   const [date, setDate] = useState<DateRange | undefined>(undefined);
+   const [popoverOpen, setPopoverOpen] = useState(false);
+   const router = useRouter();
+   const pathname = usePathname();
+   const searchParams = useSearchParams();
+   const searchParamsString = searchParams.toString();
 
-   //useEffect set date from query params or today if not set
+   // Sync date state with the current URL parameters or set 7 days back as default
    useEffect(() => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const from = urlParams.get("from");
-      const to = urlParams.get("to");
+      const from = searchParams.get("from");
+      const to = searchParams.get("to");
       if (from && to) {
          setDate({ from: new Date(from), to: new Date(to) });
       } else {
          setDate({ from: addDays(new Date(), -7), to: new Date() });
       }
-   }, []);
+   }, [searchParams]);
+
+   const handleSubmit = async () => {
+      const fromDate = date?.from ? format(date.from, "yyyy-MM-dd") : "";
+      const toDate = date?.to ? format(date.to, "yyyy-MM-dd") : "";
+
+      // Start with the current search params
+      let updatedSearchParams = searchParamsString;
+
+      // Update "from" and "to" parameters
+      updatedSearchParams = await createQueryString(updatedSearchParams, "from", fromDate);
+      updatedSearchParams = await createQueryString(updatedSearchParams, "to", toDate);
+
+      // Construct the new URL
+      const queryString = `${pathname}${updatedSearchParams}`;
+
+      // Push the new URL to the router
+      router.push(queryString);
+
+      // Close the popover
+      setPopoverOpen(false);
+   };
 
    return (
       <div className={cn("grid gap-2", className)}>
-         <Popover>
+         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
                <Button
                   id="date"
@@ -52,11 +78,10 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
                <Calendar initialFocus mode="range" defaultMonth={date?.from} selected={date} onSelect={setDate} numberOfMonths={2} />
-               <form className="mb-2 ml-2" action={setUrlParams}>
-                  <input type="hidden" name="from" value={date?.from ? format(date.from, "yyyy-MM-dd") : ""} />
-                  <input type="hidden" name="to" value={date?.to ? format(date.to, "yyyy-MM-dd") : ""} />
-                  <Button type="submit">Submit</Button>
-               </form>
+
+               <Button className="mb-2 ml-2" type="button" onClick={handleSubmit}>
+                  Submit
+               </Button>
             </PopoverContent>
          </Popover>
       </div>
