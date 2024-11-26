@@ -1,6 +1,6 @@
 "use client";
 import { Pie, PieChart } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { summarizeBuyerTypeData } from "@/utils/chartUtils";
 
@@ -17,15 +17,15 @@ const chartData = [
 const aggregatedData = summarizeBuyerTypeData(chartData);
 
 const chartConfig = {
-   visitors: {
-      label: "Visitors",
+   buyers: {
+      label: "Købere",
    },
    firstTime: {
-      label: "firstTime",
+      label: "Førstegangskøbere",
       color: "hsl(var(--chart-5))",
    },
    reBuy: {
-      label: "reBuy",
+      label: "Genkøbere",
       color: "hsl(var(--chart-3))",
    },
 } satisfies ChartConfig;
@@ -35,16 +35,20 @@ export default function Component() {
       <Card className="flex flex-col justify-center gap-1 bg-white rounded-lg h-[100%]">
          <CardHeader className="flex items-center pb-0 pt-2">
             <CardTitle>Førstegangskøbere vs. genkøbere</CardTitle>
+            <CardDescription>
+               Førstegangskøbere: {aggregatedData.filter(data => data.buyerType === "firstTime").reduce((acc, data) => acc + data.count, 0)}.
+               Genkøbere: {aggregatedData.filter(data => data.buyerType === "reBuy").reduce((acc, data) => acc + data.count, 0)}{" "}
+            </CardDescription>
          </CardHeader>
          <CardContent className="flex flex-1 items-center h-[250px] pb-0">
             <ChartContainer config={chartConfig} className="aspect-square h-[100%] w-full">
                <PieChart>
-                  <ChartTooltip content={<ChartTooltipContent nameKey="count" hideLabel />} />
+                  <ChartTooltip content={<ChartTooltipContent labelKey="buyers" />} />
                   <Pie
                      data={aggregatedData}
                      dataKey="count"
                      labelLine={false}
-                     label={({ payload, ...props }) => {
+                     label={({ ...props }) => {
                         return (
                            <text
                               cx={props.cx}
@@ -54,9 +58,7 @@ export default function Component() {
                               textAnchor={props.textAnchor}
                               dominantBaseline={props.dominantBaseline}
                               fill="hsla(var(--foreground))"
-                           >
-                              {payload.count}
-                           </text>
+                           ></text>
                         );
                      }}
                      nameKey="buyerType"
