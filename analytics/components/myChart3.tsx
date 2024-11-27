@@ -2,9 +2,9 @@
 import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
-import { Card } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
-export default function MyChart() {
+export default function MyChart3() {
    const chartData = [
       { month: "January", desktop: 186, mobile: 80 },
       { month: "February", desktop: 305, mobile: 200 },
@@ -17,26 +17,31 @@ export default function MyChart() {
    const chartConfig = {
       desktop: {
          label: "Desktop",
-         color: "#e67300",
+         color: "hsl(var(--chart-2))",
       },
       mobile: {
          label: "Mobile",
-         color: "#ff944d",
+         color: "hsl(var(--chart-5))",
       },
    } satisfies ChartConfig;
 
    return (
       <Card className="flex flex-col justify-center p-1 bg-white rounded-lg h-[100%]">
-         <ChartContainer config={chartConfig} className="h-[280px] w-full">
-            <BarChart accessibilityLayer data={chartData}>
-               <CartesianGrid vertical={false} />
-               <ChartTooltip content={<ChartTooltipContent />} />
-               <ChartLegend content={<ChartLegendContent />} />
-               <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={value => value.slice(0, 3)} />
-               <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-               <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-            </BarChart>
-         </ChartContainer>
+         <CardHeader className="p-2">
+            <CardTitle>Test graf</CardTitle>
+         </CardHeader>
+         <CardContent className="flex h-[250px] py-2 px-3">
+            <ChartContainer config={chartConfig} className="h-[100%] w-full">
+               <BarChart accessibilityLayer data={chartData}>
+                  <CartesianGrid vertical={false} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <ChartLegend content={<ChartLegendContent />} />
+                  <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={value => value.slice(0, 3)} />
+                  <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+                  <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+               </BarChart>
+            </ChartContainer>
+         </CardContent>
       </Card>
    );
 }
