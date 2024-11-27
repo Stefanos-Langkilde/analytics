@@ -64,13 +64,13 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                   onClick={() => setPopoverOpen(true)}
                   id="date"
                   variant={"outline"}
-                  className={cn("max-w-[350px] justify-start text-left font-normal", !compareDate && "text-muted-foreground")}
+                  className={cn("max-w-[320px] justify-start text-left font-normal", !compareDate && "text-muted-foreground")}
                >
                   <CalendarIcon />
-                  <span>Sml.:</span>
                   {compareDate?.from ? (
                      compareDate.to ? (
                         <>
+                           <span>Sml.:</span>
                            {format(compareDate.from, "LLL dd, y")} - {format(compareDate.to, "LLL dd, y")}
                         </>
                      ) : (
