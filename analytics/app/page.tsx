@@ -11,6 +11,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import CompareDatepicker from "@/components/compareDatepicker";
 import CompareProfits from "@/components/compareProfits";
 import { ChartData } from "@/types/chartData";
+import { Suspense } from "react";
 
 export default async function Home() {
    /// add a new chart to the dashboard by adding a new object to the charts array
@@ -36,8 +37,10 @@ export default async function Home() {
             <h1>Welcome to your Analytics Dashboard</h1>
             <p>Here you can see all the data you need to make informed decisions.</p>
             <div className={styles.headerButtons}>
-               <Datepicker />
-               <CompareDatepicker />
+               <Suspense>
+                  <Datepicker />
+                  <CompareDatepicker />
+               </Suspense>
             </div>
          </div>
          <div className={styles.chartGrid}>

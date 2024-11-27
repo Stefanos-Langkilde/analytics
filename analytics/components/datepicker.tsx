@@ -58,6 +58,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
          <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
                <Button
+                  onClick={() => setPopoverOpen(true)}
                   id="date"
                   variant={"outline"}
                   className={cn("w-[300px] justify-start text-left font-normal", !date && "text-muted-foreground")}

@@ -9,36 +9,59 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { setUrlParams } from "@/app/action";
+import { createQueryString } from "@/app/action";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivElement>) {
    const [compareDate, setCompareDate] = useState<DateRange | undefined>(undefined);
-   const from = useSearchParams().get("from");
-   const to = useSearchParams().get("to");
+   const [popoverOpen, setPopoverOpen] = useState(false);
+   const router = useRouter();
+   const pathname = usePathname();
+   const searchParams = useSearchParams();
+
+   const searchParamsString = searchParams.toString();
 
    useEffect(() => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const from = urlParams.get("compareFrom");
-      const to = urlParams.get("compareTo");
+      const from = searchParams.get("compareFrom");
+      const to = searchParams.get("compareTo");
 
       if (from && to) {
-         const fromDate = new Date(from);
-         const toDate = new Date(to);
-         setCompareDate({ from: fromDate, to: toDate });
+         setCompareDate({ from: new Date(from), to: new Date(to) });
       } else {
-         const fromDate = addYears(new Date(), -1);
-         const toDate = new Date();
-         setCompareDate({ from: addDays(fromDate, -7), to: addYears(toDate, -1) });
+         const defaultFrom = addDays(addYears(new Date(), -1), -7);
+         const defaultTo = addYears(new Date(), -1);
+         setCompareDate({ from: defaultFrom, to: defaultTo });
       }
-   }, []);
+   }, [searchParams]);
+
+   const handleSubmit = async () => {
+      const compareFromDate = compareDate?.from ? format(compareDate.from, "yyyy-MM-dd") : "";
+      const compareToDate = compareDate?.to ? format(compareDate.to, "yyyy-MM-dd") : "";
+
+      // Start with the current search params
+      let updatedSearchParams = searchParamsString;
+
+      // Update "compareFrom" and "compareTo" parameters
+      updatedSearchParams = await createQueryString(updatedSearchParams, "compareFrom", compareFromDate);
+      updatedSearchParams = await createQueryString(updatedSearchParams, "compareTo", compareToDate);
+
+      // Construct the new URL
+      const queryString = `${pathname}${updatedSearchParams}`;
+
+      // Push the new URL to the router
+      router.push(queryString);
+
+      // Close the popover after submission
+      setPopoverOpen(false);
+   };
 
    return (
       <div className={cn("grid gap-2", className)}>
-         <Popover>
+         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
                <Button
+                  onClick={() => setPopoverOpen(true)}
                   id="date"
                   variant={"outline"}
                   className={cn("max-w-[350px] justify-start text-left font-normal", !compareDate && "text-muted-foreground")}
@@ -67,17 +90,9 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                   onSelect={setCompareDate}
                   numberOfMonths={2}
                />
-               <form className="mb-2 ml-2" action={setUrlParams}>
-                  {from && to && (
-                     <>
-                        <input type="hidden" name="from" value={from} />
-                        <input type="hidden" name="to" value={to} />
-                     </>
-                  )}
-                  <input type="hidden" name="compareFrom" value={compareDate?.from ? format(compareDate.from, "yyyy-MM-dd") : ""} />
-                  <input type="hidden" name="compareTo" value={compareDate?.to ? format(compareDate.to, "yyyy-MM-dd") : ""} />
-                  <Button type="submit">Submit</Button>
-               </form>
+               <Button className="mb-2 ml-2" type="button" onClick={handleSubmit}>
+                  Submit
+               </Button>
             </PopoverContent>
          </Popover>
       </div>

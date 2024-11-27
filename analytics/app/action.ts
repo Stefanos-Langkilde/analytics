@@ -1,7 +1,6 @@
 "use server";
 import { promises as fs } from "fs";
 import { console } from "inspector";
-import { redirect } from "next/navigation";
 
 //fetch mock data
 export async function fetchMockData() {
@@ -34,29 +33,7 @@ export async function fetchComparisonMockData() {
    }
 }
 
-///Set the URL params to the selected date range
-export async function setUrlParams(formData: FormData) {
-   const from = formData.get("from");
-   const to = formData.get("to");
-   const compareFrom = formData.get("compareFrom");
-   const compareTo = formData.get("compareTo");
-
-   let url = "/?";
-
-   if (from && to) {
-      url += `from=${from}&to=${to}`;
-   }
-
-   if (compareFrom && compareTo) {
-      if (url.length > 2) {
-         url += "&";
-      }
-      url += `compareFrom=${compareFrom}&compareTo=${compareTo}`;
-   }
-
-   redirect(url);
-}
-
+///This function will create a new query string by adding or updating a key-value pair
 export async function createQueryString(searchParams: string, name: string, value: string): Promise<string> {
    // Convert the existing query string into a URLSearchParams object
    const params = new URLSearchParams(searchParams);
