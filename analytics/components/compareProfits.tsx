@@ -50,11 +50,11 @@ export default function CompareProfits({ data }: CompareProfitsProps) {
    // Generate dynamic chart configuration
    const chartConfig = {
       [`${currentYear}Revenue`]: {
-         label: `${currentYear} Revenue`,
+         label: `${currentYear} Omsætning`,
          color: "hsl(var(--chart-1))",
       },
       [`${comparisonYear}Revenue`]: {
-         label: `${comparisonYear} Revenue`,
+         label: `${comparisonYear} Omsætning`,
          color: "hsl(var(--chart-2))",
       },
    } satisfies ChartConfig;

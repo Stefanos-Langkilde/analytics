@@ -67,7 +67,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                   className={cn("max-w-[350px] justify-start text-left font-normal", !compareDate && "text-muted-foreground")}
                >
                   <CalendarIcon />
-                  <span>Compare:</span>
+                  <span>Sml.:</span>
                   {compareDate?.from ? (
                      compareDate.to ? (
                         <>
@@ -77,7 +77,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                         format(compareDate.from, "LLL dd, y")
                      )
                   ) : (
-                     <span>Pick a date to compare</span>
+                     <span>Vælg dato for at sammenligne</span>
                   )}
                </Button>
             </PopoverTrigger>

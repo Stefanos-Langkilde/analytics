@@ -1,9 +1,9 @@
 import styles from "./mainPageStyle.module.scss";
 import { fetchComparisonMockData, fetchMockData } from "./action";
 import Datepicker from "../components/datepicker";
+import MyChart from "@/components/myChart";
 import MyChart2 from "@/components/myChart2";
-import MyChart from "../components/myChart";
-import MyChart3 from "@/components/myChart";
+import MyChart3 from "@/components/myChart3";
 import ProfitsChart from "@/components/profitsChart";
 import BarChart from "@/components/barChart";
 import PieChart from "@/components/pieChart";
@@ -34,8 +34,8 @@ export default async function Home() {
    return (
       <main className={styles.wrapper}>
          <div className={styles.header}>
-            <h1>Welcome to your Analytics Dashboard</h1>
-            <p>Here you can see all the data you need to make informed decisions.</p>
+            <h1>Analytics Dashboard</h1>
+            <p>Oversigt over dine data</p>
             <div className={styles.headerButtons}>
                <Suspense>
                   <Datepicker />
