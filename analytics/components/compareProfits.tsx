@@ -21,15 +21,15 @@ export default function CompareProfits({ data }: CompareProfitsProps) {
    const years = [...new Set([...data.currentYearData, ...data.previousYearData].map(item => new Date(item.date).getFullYear()))];
 
    // Ensure there are exactly two years (current year and comparison year)
-   const [currentYear, comparisonYear] = years.sort((a, b) => b - a); // Sort descending to get the most recent years
+   const [currentYear, comparisonYear] = years.sort((a, b) => b - a);
 
    // Combine data dynamically for the two years
    type CombinedData = {
       fullDate: string;
-   } & Record<string, number>; // Dynamic keys for revenue are numbers
+   } & Record<string, number>;
 
    const combinedData = [...data.currentYearData, ...data.previousYearData].reduce((acc, item) => {
-      const fullDate = new Date(item.date).toLocaleDateString("en-US", { day: "2-digit", month: "short" }); // e.g., "05-Nov"
+      const fullDate = new Date(item.date).toLocaleDateString("en-US", { day: "2-digit", month: "short" });
       const year = new Date(item.date).getFullYear();
       const target = acc.find(entry => entry.fullDate === fullDate);
 

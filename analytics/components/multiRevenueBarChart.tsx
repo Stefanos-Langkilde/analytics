@@ -20,7 +20,8 @@ export default function SalesLineChart({ data }: { data: ChartData[] }) {
          }));
          setProcessedData(updatedData);
       } else {
-         setProcessedData(data); // Use original data for other dropdown values
+         // Use original data for other dropdown values
+         setProcessedData(data);
       }
    }, [data, dropdownValue]);
 
