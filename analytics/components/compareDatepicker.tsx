@@ -70,7 +70,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                   {compareDate?.from ? (
                      compareDate.to ? (
                         <>
-                           <span>Sml.:</span>
+                           <span>Sammenlign:</span>
                            {format(compareDate.from, "LLL dd, y")} - {format(compareDate.to, "LLL dd, y")}
                         </>
                      ) : (

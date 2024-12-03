@@ -5,6 +5,7 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { ChartData } from "@/types/chartData";
+import { formatCurrency } from "@/utils/chartUtils";
 
 interface YearData {
    currentYearData: ChartData[];
@@ -79,7 +80,49 @@ export default function CompareProfits({ data }: CompareProfitsProps) {
                   <CartesianGrid vertical={false} />
                   <XAxis dataKey="fullDate" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={value => value} />
                   <YAxis domain={[0, "auto"]} />
-                  <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                  <ChartTooltip
+                     cursor={false}
+                     content={
+                        <ChartTooltipContent
+                           className="w-[230px]"
+                           formatter={(value, name, item, index) => {
+                              // Ensure item.payload is defined and contains the required properties
+                              const currentYearRevenue = item.payload ? item.payload[`${currentYear}Revenue`] : 0;
+                              const comparisonYearRevenue = item.payload ? item.payload[`${comparisonYear}Revenue`] : 0;
+                              const percentageDifference =
+                                 comparisonYearRevenue !== 0 ? ((currentYearRevenue - comparisonYearRevenue) / comparisonYearRevenue) * 100 : 0;
+
+                              return (
+                                 <>
+                                    <div
+                                       className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
+                                       style={
+                                          {
+                                             "--color-bg": `var(--color-${name})`,
+                                          } as React.CSSProperties
+                                       }
+                                    />
+                                    <div className="flex min-w-[80px] items-baseline gap-2 text-xs text-muted-foreground">
+                                       {chartConfig[name as keyof typeof chartConfig]?.label || name}
+                                       <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                                          {formatCurrency(Number(value))}
+                                       </div>
+                                    </div>
+                                    {/* Add percentage difference */}
+                                    {index === 1 && (
+                                       <div className="mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-muted-foreground">
+                                          Forskel
+                                          <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                                             {percentageDifference.toFixed(2)}%
+                                          </div>
+                                       </div>
+                                    )}
+                                 </>
+                              );
+                           }}
+                        />
+                     }
+                  />
                   <defs>
                      <linearGradient id="fillCurrentYear" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor={`var(--color-${currentYear}Revenue)`} stopOpacity={0.8} />

@@ -61,7 +61,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                   onClick={() => setPopoverOpen(true)}
                   id="date"
                   variant={"outline"}
-                  className={cn("w-[320px] justify-start text-left font-normal", !date && "text-muted-foreground")}
+                  className={cn("w-[250px] justify-start text-left font-normal", !date && "text-muted-foreground")}
                >
                   <CalendarIcon />
                   {date?.from ? (
@@ -73,7 +73,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
                         format(date.from, "LLL dd, y")
                      )
                   ) : (
-                     <span>Pick a date</span>
+                     <span>Vælg en dato</span>
                   )}
                </Button>
             </PopoverTrigger>
