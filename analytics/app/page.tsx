@@ -24,9 +24,11 @@ export default async function Home(props: { searchParams: SearchParams }) {
       // { id: 1, span: 12, type: "profitsChart" },
       { id: 5, span: 8, type: "ordersMade" },
       { id: 6, span: 4, type: "firstVersusRebuyers" },
-      { id: 2, span: 12, type: "productPopularity" },
-      { id: 3, span: 6, type: "productSale" },
-      { id: 4, span: 6, type: "totalSales" },
+      //test charts are for visual testing of the dashboard
+      //remove them by removing the object from the array or commenting it out
+      { id: 2, span: 12, type: "testChartOne" },
+      { id: 3, span: 6, type: "testChartTwo" },
+      { id: 4, span: 6, type: "testChartThree" },
    ];
 
    const params = await props.searchParams;
@@ -34,9 +36,9 @@ export default async function Home(props: { searchParams: SearchParams }) {
    //mock data for development
    // const chartData = await fetchMockData();
 
-   const comparedata = await fetchComparisonMockData();
-
    const chartData = await fetchRevenueData(params);
+
+   const comparedata = await fetchComparisonMockData();
 
    return (
       <main className={styles.wrapper}>
@@ -66,11 +68,11 @@ export default async function Home(props: { searchParams: SearchParams }) {
 ///to render the new chart component.
 function RenderChart(chart: string, chartData: ChartData[], compareData: { currentYearData: ChartData[]; previousYearData: ChartData[] }) {
    switch (chart) {
-      case "productPopularity":
+      case "testChartOne":
          return <MyChart />;
-      case "productSale":
+      case "testChartTwo":
          return <MyChart2 />;
-      case "totalSales":
+      case "testChartThree":
          return <MyChart3 />;
       case "profitsChart":
          return <ProfitsChart data={chartData} />;
