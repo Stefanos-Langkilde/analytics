@@ -1,5 +1,5 @@
 import styles from "./mainPageStyle.module.scss";
-import { fetchComparisonMockData, fetchMockData, fetchRevenueData } from "./action";
+import { fetchComparisonMockData, fetchRevenueData } from "./action";
 import Datepicker from "../components/datepicker";
 import MyChart from "@/components/myChart";
 import MyChart2 from "@/components/myChart2";
@@ -13,7 +13,9 @@ import CompareProfits from "@/components/compareProfits";
 import { ChartData } from "@/types/chartData";
 import { Suspense } from "react";
 
-export default async function Home() {
+type SearchParams = { [key: string]: string | string[] | undefined };
+
+export default async function Home(props: { searchParams: SearchParams }) {
    /// add a new chart to the dashboard by adding a new object to the charts array
    /// the object should have an id, how many columns it should span (max 12), and type property.
    /// position the chart by changing the order of the objects in the array, first item will be on top
@@ -27,12 +29,14 @@ export default async function Home() {
       { id: 4, span: 6, type: "totalSales" },
    ];
 
-   const chartData = await fetchMockData();
+   const params = await props.searchParams;
+
+   //mock data for development
+   // const chartData = await fetchMockData();
 
    const comparedata = await fetchComparisonMockData();
 
-   const revenueData = await fetchRevenueData();
-   console.log("This is revenue data: ", revenueData);
+   const chartData = await fetchRevenueData(params);
 
    return (
       <main className={styles.wrapper}>

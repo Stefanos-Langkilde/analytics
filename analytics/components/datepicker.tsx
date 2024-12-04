@@ -29,8 +29,14 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
          setDate({ from: new Date(from), to: new Date(to) });
       } else {
          setDate({ from: addDays(new Date(), -7), to: new Date() });
+
+         //set url params to default setdate
+         const fromDate = format(addDays(new Date(), -7), "yyyy-MM-dd");
+         const toDate = format(new Date(), "yyyy-MM-dd");
+         const queryString = `?from=${fromDate}&to=${toDate}`;
+         router.push(`${pathname}${queryString}`);
       }
-   }, [searchParams]);
+   }, [searchParams, pathname, router]);
 
    const handleSubmit = async () => {
       const fromDate = date?.from ? format(date.from, "yyyy-MM-dd") : "";

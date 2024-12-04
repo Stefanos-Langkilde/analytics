@@ -46,12 +46,22 @@ export async function createQueryString(searchParams: string, name: string, valu
 }
 
 ///fetch data from the API
+//from=2024-11-01&to=2024-11-29
+
+type SearchParams = { [key: string]: string | string[] | undefined };
+
 const AUTH_KEY = process.env.PENZAI_TOKEN;
 const PENZAI_URL = process.env.PENZAI_URL;
 
-export async function fetchRevenueData() {
+export async function fetchRevenueData(searchParams: SearchParams) {
+   const from = searchParams.from;
+   const to = searchParams.to;
+
+   //create a new URL object with the search parameters
+   const url = new URL(`${PENZAI_URL}/analytics/range?from=${from}&to=${to}`);
+
    try {
-      const response = await fetch(`${PENZAI_URL!}analytics/range?from=2024-11-01&to=2024-11-29`, {
+      const response = await fetch(`${url}`, {
          method: "GET",
          headers: {
             "Content-Type": "application/json",
@@ -60,6 +70,7 @@ export async function fetchRevenueData() {
          next: {
             tags: ["revenue"],
          },
+         cache: "no-store",
       });
 
       if (!response.ok) {
@@ -71,6 +82,7 @@ export async function fetchRevenueData() {
       return data;
    } catch (error) {
       console.error("Failed to fetch data:", error);
+
       return [];
    }
 }
