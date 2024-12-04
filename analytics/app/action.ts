@@ -44,3 +44,33 @@ export async function createQueryString(searchParams: string, name: string, valu
    // Return the updated query string
    return `?${params.toString()}`;
 }
+
+///fetch data from the API
+const AUTH_KEY = process.env.PENZAI_TOKEN;
+const PENZAI_URL = process.env.PENZAI_URL;
+
+export async function fetchRevenueData() {
+   try {
+      const response = await fetch(`${PENZAI_URL!}analytics/range?from=2024-11-01&to=2024-11-29`, {
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${AUTH_KEY}`,
+         },
+         next: {
+            tags: ["revenue"],
+         },
+      });
+
+      if (!response.ok) {
+         throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      return data;
+   } catch (error) {
+      console.error("Failed to fetch data:", error);
+      return [];
+   }
+}

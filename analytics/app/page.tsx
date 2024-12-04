@@ -1,5 +1,5 @@
 import styles from "./mainPageStyle.module.scss";
-import { fetchComparisonMockData, fetchMockData } from "./action";
+import { fetchComparisonMockData, fetchMockData, fetchRevenueData } from "./action";
 import Datepicker from "../components/datepicker";
 import MyChart from "@/components/myChart";
 import MyChart2 from "@/components/myChart2";
@@ -30,6 +30,9 @@ export default async function Home() {
    const chartData = await fetchMockData();
 
    const comparedata = await fetchComparisonMockData();
+
+   const revenueData = await fetchRevenueData();
+   console.log("This is revenue data: ", revenueData);
 
    return (
       <main className={styles.wrapper}>
