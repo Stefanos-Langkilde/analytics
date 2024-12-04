@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
    DropdownMenu,
    DropdownMenuContent,
-   DropdownMenuLabel,
    DropdownMenuRadioGroup,
    DropdownMenuRadioItem,
    DropdownMenuSeparator,
@@ -21,7 +20,6 @@ export default function RadioDropdown({ onChange, dropdownValue }: { dropdownVal
             </Button>
          </DropdownMenuTrigger>
          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Vælg data</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuRadioGroup value={dropdownValue} onValueChange={onChange}>
                <DropdownMenuRadioItem value="revenue">Omsætning</DropdownMenuRadioItem>

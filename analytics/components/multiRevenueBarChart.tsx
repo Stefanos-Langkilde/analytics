@@ -3,7 +3,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import RadioDropDown from "@/components/radioDropdown";
-import { calculateAmount, generateDescriptiveText, valueToDanishText } from "@/utils/chartUtils";
+import { calculateAmount, formatCurrency, generateDescriptiveText, valueToDanishText } from "@/utils/chartUtils";
 import { useEffect, useState } from "react";
 import { ChartData } from "@/types/chartData";
 
@@ -20,7 +20,8 @@ export default function SalesLineChart({ data }: { data: ChartData[] }) {
          }));
          setProcessedData(updatedData);
       } else {
-         setProcessedData(data); // Use original data for other dropdown values
+         // Use original data for other dropdown values
+         setProcessedData(data);
       }
    }, [data, dropdownValue]);
 
@@ -87,7 +88,22 @@ export default function SalesLineChart({ data }: { data: ChartData[] }) {
                            style: { textAnchor: "middle" },
                         }}
                      />
-                     <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                     <ChartTooltip
+                        cursor={false}
+                        content={
+                           <ChartTooltipContent
+                              className="min-w-[100px]"
+                              formatter={(value, name) => (
+                                 <div className="flex min-w-[80px] items-baseline gap-2 text-xs text-muted-foreground">
+                                    {chartConfig[name as keyof typeof chartConfig]?.label || name}
+                                    <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                                       {dropdownValue === "amount" ? value : formatCurrency(Number(value))}
+                                    </div>
+                                 </div>
+                              )}
+                           />
+                        }
+                     />
                      <Bar dataKey={dropdownValue} fill={`var(--color-${dropdownValue})`} radius={8} />
                   </BarChart>
                ) : (

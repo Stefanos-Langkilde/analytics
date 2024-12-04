@@ -1,6 +1,6 @@
 // This function aggregates the data by summing up the count for each buyerType for the pie chart
-export function summarizeBuyerTypeData(data: { buyerType: string; count: number; fill: string }[]) {
-   return data.reduce((acc: { buyerType: string; count: number; fill: string }[], curr) => {
+export function summarizeBuyerTypeData(data: { buyerType: string; count: number }[]) {
+   return data.reduce((acc: { buyerType: string; count: number }[], curr) => {
       const existing = acc.find(item => item.buyerType === curr.buyerType);
       if (existing) {
          existing.count += curr.count;
@@ -42,18 +42,31 @@ export const generateDescriptiveText = (dropdownValue: string | null, totalAmoun
    }
 
    const label = valueToDanishText[dropdownValue];
-   const currency = "kr.";
+   const currencyFormatter = new Intl.NumberFormat("da-DK", {
+      style: "currency",
+      currency: "DKK",
+      minimumFractionDigits: 2,
+   });
 
-   const amountText = totalAmount.toFixed(2);
+   const amountText = dropdownValue === "amount" ? totalAmount.toFixed(2) : currencyFormatter.format(totalAmount);
 
    switch (dropdownValue) {
       case "amount":
          return `Total ordrer for periode: ${amountText}`;
       case "revenue":
-         return `Total omsætning for periode: ${amountText} ${currency}`;
+         return `Total omsætning for periode: ${amountText}`;
       case "averageOrderValue":
-         return `Gennemsnitlig ordreværdi for periode: ${amountText} ${currency}`;
+         return `Gennemsnitlig ordreværdi for periode: ${amountText}`;
       default:
          return `Total ${label}: ${amountText}`;
    }
 };
+
+export function formatCurrency(value: number): string {
+   const currencyFormatter = new Intl.NumberFormat("da-DK", {
+      style: "currency",
+      currency: "DKK",
+      minimumFractionDigits: 2,
+   });
+   return currencyFormatter.format(value);
+}

@@ -5,7 +5,7 @@ import MyChart from "@/components/myChart";
 import MyChart2 from "@/components/myChart2";
 import MyChart3 from "@/components/myChart3";
 import ProfitsChart from "@/components/profitsChart";
-import BarChart from "@/components/barChart";
+import RevenueChart from "@/components/multiRevenueBarChart";
 import PieChart from "@/components/pieChart";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import CompareDatepicker from "@/components/compareDatepicker";
@@ -68,7 +68,7 @@ function RenderChart(chart: string, chartData: ChartData[], compareData: { curre
       case "profitsChart":
          return <ProfitsChart data={chartData} />;
       case "ordersMade":
-         return <BarChart data={chartData} />;
+         return <RevenueChart data={chartData} />;
       case "firstVersusRebuyers":
          return <PieChart />;
       case "compareProfitsChart":
