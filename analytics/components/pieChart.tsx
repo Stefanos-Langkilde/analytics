@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { summarizeBuyerTypeData } from "@/utils/chartUtils";
 
-export const description = "A pie chart visiting buyers";
+export const description = "A pie chart for buyers";
 
 const chartData = [
    { buyerType: "firstTime", count: 275 },
