@@ -12,6 +12,7 @@ import CompareDatepicker from "@/components/compareDatepicker";
 import CompareProfits from "@/components/compareProfits";
 import { ChartData } from "@/types/chartData";
 import { Suspense } from "react";
+import AutoRefreshToggle from "@/components/AutoRefreshToggle";
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 
@@ -51,6 +52,7 @@ export default async function Home(props: { searchParams: SearchParams }) {
                   <CompareDatepicker />
                </Suspense>
             </div>
+            <AutoRefreshToggle />
          </div>
          <div className={styles.chartGrid}>
             {charts.map(chart => (

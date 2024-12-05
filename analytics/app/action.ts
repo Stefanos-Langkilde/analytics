@@ -1,6 +1,7 @@
 "use server";
 import { promises as fs } from "fs";
 import { console } from "inspector";
+import { revalidateTag } from "next/cache";
 
 //fetch mock data
 export async function fetchMockData() {
@@ -45,7 +46,6 @@ export async function createQueryString(searchParams: string, name: string, valu
    return `?${params.toString()}`;
 }
 
-
 ///fetch data from the API
 type SearchParams = { [key: string]: string | string[] | undefined };
 
@@ -84,4 +84,10 @@ export async function fetchRevenueData(searchParams: SearchParams) {
 
       return [];
    }
+}
+
+///add more revalidations here when needed
+export async function revalidateData() {
+   revalidateTag("revenue");
+   // revalidateTag("comparisonData");
 }
