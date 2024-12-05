@@ -12,7 +12,7 @@ import CompareDatepicker from "@/components/compareDatepicker";
 import CompareProfits from "@/components/compareProfits";
 import { ChartData } from "@/types/chartData";
 import { Suspense } from "react";
-import AutoRefreshToggle from "@/components/AutoRefreshToggle";
+import AutoRefreshToggling from "@/components/autoRefreshToggling";
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 
@@ -47,12 +47,16 @@ export default async function Home(props: { searchParams: SearchParams }) {
             <h1>Analytics Dashboard</h1>
             <p>Oversigt over dine data</p>
             <div className={styles.headerButtons}>
-               <Suspense>
-                  <Datepicker />
-                  <CompareDatepicker />
-               </Suspense>
+               <div className={styles.headerButtonGroupOne}>
+                  <Suspense>
+                     <Datepicker />
+                     <CompareDatepicker />
+                  </Suspense>
+               </div>
+               <div className={styles.headerButtonGroupTwo}>
+                  <AutoRefreshToggling />
+               </div>
             </div>
-            <AutoRefreshToggle />
          </div>
          <div className={styles.chartGrid}>
             {charts.map(chart => (

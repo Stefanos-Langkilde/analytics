@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { revalidateData } from "@/app/action";
+import styles from "./autoRefreshToggle.module.scss";
 
-const AutoRefreshToggle: React.FC = () => {
+export default function AutoRefreshToggling() {
    const [autoRefresh, setAutoRefresh] = useState(false);
 
    useEffect(() => {
@@ -17,13 +18,11 @@ const AutoRefreshToggle: React.FC = () => {
    }, [autoRefresh]);
 
    return (
-      <div>
-         <label>
-            Auto Refresh:
-            <input type="checkbox" checked={autoRefresh} onChange={e => setAutoRefresh(e.target.checked)} />
-         </label>
+      <div className={styles["auto-refresh"]}>
+         <label htmlFor="auto-refresh">Auto update data:</label>
+         <div id="auto-refresh" className={`${styles.toggle} ${autoRefresh ? styles.active : ""}`} onClick={() => setAutoRefresh(!autoRefresh)}>
+            <div className={styles.knob} />
+         </div>
       </div>
    );
-};
-
-export default AutoRefreshToggle;
+}
