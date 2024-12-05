@@ -10,11 +10,9 @@ import PieChart from "@/components/pieChart";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import CompareDatepicker from "@/components/compareDatepicker";
 import CompareProfits from "@/components/compareProfits";
-import { ChartData } from "@/types/chartData";
+import { ChartData, SearchParams } from "@/types/chartData";
 import { Suspense } from "react";
 import AutoRefreshToggling from "@/components/autoRefreshToggling";
-
-type SearchParams = { [key: string]: string | string[] | undefined };
 
 export default async function Home(props: { searchParams: SearchParams }) {
    /// add a new chart to the dashboard by adding a new object to the charts array

@@ -69,7 +69,8 @@ export async function fetchRevenueData(searchParams: SearchParams) {
          next: {
             tags: ["revenue"],
          },
-         cache: "no-store",
+         //cash policy for revalidation
+         cache: "default",
       });
 
       if (!response.ok) {
