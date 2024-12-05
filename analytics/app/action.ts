@@ -45,9 +45,8 @@ export async function createQueryString(searchParams: string, name: string, valu
    return `?${params.toString()}`;
 }
 
-///fetch data from the API
-//from=2024-11-01&to=2024-11-29
 
+///fetch data from the API
 type SearchParams = { [key: string]: string | string[] | undefined };
 
 const AUTH_KEY = process.env.PENZAI_TOKEN;
