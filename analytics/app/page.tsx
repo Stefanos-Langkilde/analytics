@@ -1,5 +1,5 @@
 import styles from "./mainPageStyle.module.scss";
-import { fetchComparisonMockData, fetchMockData } from "./action";
+import { fetchComparisonMockData, fetchRevenueData } from "./action";
 import Datepicker from "../components/datepicker";
 import MyChart from "@/components/myChart";
 import MyChart2 from "@/components/myChart2";
@@ -10,10 +10,11 @@ import PieChart from "@/components/pieChart";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import CompareDatepicker from "@/components/compareDatepicker";
 import CompareProfits from "@/components/compareProfits";
-import { ChartData } from "@/types/chartData";
+import { ChartData, SearchParams } from "@/types/chartData";
 import { Suspense } from "react";
+import AutoRefreshToggling from "@/components/autoRefreshToggling";
 
-export default async function Home() {
+export default async function Home(props: { searchParams: SearchParams }) {
    /// add a new chart to the dashboard by adding a new object to the charts array
    /// the object should have an id, how many columns it should span (max 12), and type property.
    /// position the chart by changing the order of the objects in the array, first item will be on top
@@ -22,12 +23,19 @@ export default async function Home() {
       // { id: 1, span: 12, type: "profitsChart" },
       { id: 5, span: 8, type: "ordersMade" },
       { id: 6, span: 4, type: "firstVersusRebuyers" },
-      { id: 2, span: 12, type: "productPopularity" },
-      { id: 3, span: 6, type: "productSale" },
-      { id: 4, span: 6, type: "totalSales" },
+      //test charts below are for visual testing of the dashboard
+      //remove them by removing the object from the array or commenting it out
+      { id: 2, span: 12, type: "testChartOne" },
+      { id: 3, span: 6, type: "testChartTwo" },
+      { id: 4, span: 6, type: "testChartThree" },
    ];
 
-   const chartData = await fetchMockData();
+   const params = await props.searchParams;
+
+   //mock data for development
+   // const chartData = await fetchMockData();
+
+   const chartData = await fetchRevenueData(params);
 
    const comparedata = await fetchComparisonMockData();
 
@@ -37,10 +45,15 @@ export default async function Home() {
             <h1>Analytics Dashboard</h1>
             <p>Oversigt over dine data</p>
             <div className={styles.headerButtons}>
-               <Suspense>
-                  <Datepicker />
-                  <CompareDatepicker />
-               </Suspense>
+               <div className={styles.headerButtonGroupOne}>
+                  <Suspense>
+                     <Datepicker />
+                     <CompareDatepicker />
+                  </Suspense>
+               </div>
+               <div className={styles.headerButtonGroupTwo}>
+                  <AutoRefreshToggling />
+               </div>
             </div>
          </div>
          <div className={styles.chartGrid}>
@@ -59,11 +72,11 @@ export default async function Home() {
 ///to render the new chart component.
 function RenderChart(chart: string, chartData: ChartData[], compareData: { currentYearData: ChartData[]; previousYearData: ChartData[] }) {
    switch (chart) {
-      case "productPopularity":
+      case "testChartOne":
          return <MyChart />;
-      case "productSale":
+      case "testChartTwo":
          return <MyChart2 />;
-      case "totalSales":
+      case "testChartThree":
          return <MyChart3 />;
       case "profitsChart":
          return <ProfitsChart data={chartData} />;

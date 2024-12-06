@@ -1,6 +1,7 @@
 "use server";
 import { promises as fs } from "fs";
 import { console } from "inspector";
+import { revalidateTag } from "next/cache";
 
 //fetch mock data
 export async function fetchMockData() {
@@ -43,4 +44,51 @@ export async function createQueryString(searchParams: string, name: string, valu
 
    // Return the updated query string
    return `?${params.toString()}`;
+}
+
+///fetch data from the API
+type SearchParams = { [key: string]: string | string[] | undefined };
+
+const AUTH_KEY = process.env.PENZAI_TOKEN;
+const PENZAI_URL = process.env.PENZAI_URL;
+
+export async function fetchRevenueData(searchParams: SearchParams) {
+   const from = searchParams.from;
+   const to = searchParams.to;
+
+   //create a new URL object with the search parameters
+   const url = new URL(`${PENZAI_URL}/analytics/range?from=${from}&to=${to}`);
+
+   try {
+      const response = await fetch(`${url}`, {
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${AUTH_KEY}`,
+         },
+         next: {
+            tags: ["revenue"],
+         },
+         //cash policy for revalidation
+         cache: "default",
+      });
+
+      if (!response.ok) {
+         throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      return data;
+   } catch (error) {
+      console.error("Failed to fetch data:", error);
+
+      return [];
+   }
+}
+
+///add more revalidations here when needed
+export async function revalidateData() {
+   revalidateTag("revenue");
+   // revalidateTag("comparisonData");
 }
