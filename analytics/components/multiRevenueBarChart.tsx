@@ -107,7 +107,7 @@ export default function SalesLineChart({ data }: { data: ChartData[] }) {
                      <Bar dataKey={dropdownValue} fill={`var(--color-${dropdownValue})`} radius={8} />
                   </BarChart>
                ) : (
-                  <p>Loading...</p>
+                  <p>Ingen data...</p>
                )}
             </ChartContainer>
          </CardContent>

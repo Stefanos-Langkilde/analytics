@@ -1,6 +1,8 @@
 "use server";
+import { SearchParams } from "@/types/chartData";
 import { promises as fs } from "fs";
 import { console } from "inspector";
+import { format, addDays } from "date-fns";
 import { revalidateTag } from "next/cache";
 
 //fetch mock data
@@ -47,20 +49,24 @@ export async function createQueryString(searchParams: string, name: string, valu
 }
 
 ///fetch data from the API
-type SearchParams = { [key: string]: string | string[] | undefined };
 
 const AUTH_KEY = process.env.PENZAI_TOKEN;
 const PENZAI_URL = process.env.PENZAI_URL;
 
 export async function fetchRevenueData(searchParams: SearchParams) {
-   const from = searchParams.from;
-   const to = searchParams.to;
+   const from = (searchParams.from as string) || format(addDays(new Date(), -7), "yyyy-MM-dd");
+   const to = (searchParams.to as string) || format(new Date(), "yyyy-MM-dd");
 
    //create a new URL object with the search parameters
-   const url = new URL(`${PENZAI_URL}/analytics/range?from=${from}&to=${to}`);
+   const url = new URL(`${PENZAI_URL}`);
+   const urlSearchParams = new URLSearchParams([
+      ["from", from],
+      ["to", to],
+   ]);
+   url.search = urlSearchParams.toString();
 
    try {
-      const response = await fetch(`${url}`, {
+      const response = await fetch(url.toString(), {
          method: "GET",
          headers: {
             "Content-Type": "application/json",
