@@ -23,7 +23,7 @@ export default async function Home(props: { searchParams: SearchParams }) {
       // { id: 1, span: 12, type: "profitsChart" },
       { id: 5, span: 8, type: "ordersMade" },
       { id: 6, span: 4, type: "firstVersusRebuyers" },
-      //test charts are for visual testing of the dashboard
+      //test charts below are for visual testing of the dashboard
       //remove them by removing the object from the array or commenting it out
       { id: 2, span: 12, type: "testChartOne" },
       { id: 3, span: 6, type: "testChartTwo" },
