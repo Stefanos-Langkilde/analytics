@@ -34,7 +34,7 @@ export default function DatePickerWithRange({ className }: React.HTMLAttributes<
          const fromDate = format(addDays(new Date(), -7), "yyyy-MM-dd");
          const toDate = format(new Date(), "yyyy-MM-dd");
          const queryString = `?from=${fromDate}&to=${toDate}`;
-         router.push(`${pathname}${queryString}`);
+         router.replace(`${pathname}${queryString}`);
       }
    }, [searchParams, pathname, router]);
 
