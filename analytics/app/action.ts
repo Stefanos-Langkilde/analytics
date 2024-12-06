@@ -1,4 +1,5 @@
 "use server";
+import { SearchParams } from "@/types/chartData";
 import { promises as fs } from "fs";
 import { console } from "inspector";
 import { revalidateTag } from "next/cache";
@@ -47,14 +48,13 @@ export async function createQueryString(searchParams: string, name: string, valu
 }
 
 ///fetch data from the API
-type SearchParams = { [key: string]: string | string[] | undefined };
 
 const AUTH_KEY = process.env.PENZAI_TOKEN;
 const PENZAI_URL = process.env.PENZAI_URL;
 
 export async function fetchRevenueData(searchParams: SearchParams) {
-   const from = searchParams.from;
-   const to = searchParams.to;
+   const from = searchParams.from as string | undefined;
+   const to = searchParams.to as string | undefined;
 
    //create a new URL object with the search parameters
    const url = new URL(`${PENZAI_URL}/analytics/range?from=${from}&to=${to}`);

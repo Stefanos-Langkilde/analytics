@@ -14,7 +14,7 @@ import { ChartData, SearchParams } from "@/types/chartData";
 import { Suspense } from "react";
 import AutoRefreshToggling from "@/components/autoRefreshToggling";
 
-export default async function Home(props: { searchParams: SearchParams }) {
+export default async function Home(props: { searchParams: Promise<SearchParams> }) {
    /// add a new chart to the dashboard by adding a new object to the charts array
    /// the object should have an id, how many columns it should span (max 12), and type property.
    /// position the chart by changing the order of the objects in the array, first item will be on top
