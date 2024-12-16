@@ -6,6 +6,9 @@ Jeg vil i dette projekt visualisere data i form af en graf.
 
 De data der bruges hentes fra en API fra Scan-Choco, og bearbejdes.
 
+Vær opmærksom på at mock data representerer et kald fra API
+og det er derfor ikke muligt at få nyt data ved at skifte dato.
+
 Dependancies som bruges i dette projekt:
 
 - NextJS

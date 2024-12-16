@@ -1,5 +1,5 @@
 import styles from "./mainPageStyle.module.scss";
-import { fetchComparisonMockData, fetchRevenueData } from "./action";
+import { fetchComparisonMockData, fetchMockData } from "./action";
 import Datepicker from "../components/datepicker";
 import MyChart from "@/components/myChart";
 import MyChart2 from "@/components/myChart2";
@@ -31,11 +31,12 @@ export default async function Home(props: { searchParams: Promise<SearchParams> 
    ];
 
    const params = await props.searchParams;
+   console.log(params);
 
    //mock data for development
-   // const chartData = await fetchMockData();
+   const chartData = await fetchMockData();
 
-   const chartData = await fetchRevenueData(params);
+   // const chartData = await fetchRevenueData(params);
 
    const comparedata = await fetchComparisonMockData();
 
